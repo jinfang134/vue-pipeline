@@ -110,6 +110,7 @@ export default {
       }
       return arr;
     },
+    // from the (index)th node to bfs, set the x coordinate of the first to x
     bfs(index, x) {
       const matrix = this.data.matrix;
       const queue = [];
