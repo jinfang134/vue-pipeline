@@ -8,12 +8,12 @@
         <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
       </g>
 
-      <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :label="item.name" :x="item.x"
-        :y="item.y" :node="item" />
+      <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :status="item.status"
+        :label="item.name" :x="item.x" :y="item.y" :node="item" />
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
         :y2="item.y2" />
 
-      <g transform="translate(1188,55)" class="pipeline-node">
+      <g transform="translate(900,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
         <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
       </g>
@@ -148,13 +148,9 @@ export default {
 </script>
 
 <style >
-.pipeline-node-selected .svgResultStatus > circle {
-  stroke: none;
-}
 
-.pipeline-connector {
-  stroke: #949393;
-}
+
+
 .pipeline-node-terminal {
   fill: #949393;
 }
@@ -182,31 +178,6 @@ export default {
 }
 .svgResultStatus.no-background .circle-bg {
   opacity: 0;
-}
-.svgResultStatus {
-  transform: translateZ(0);
-}
-.svgResultStatus > circle {
-  stroke: white;
-  stroke-width: 2px;
-}
-.svgResultStatus > circle.success {
-  fill: #8cc04f;
-}
-.svgResultStatus > circle.failure {
-  fill: #d54c53;
-}
-.svgResultStatus > circle.unstable {
-  fill: #f6b44b;
-}
-.svgResultStatus > circle.aborted {
-  fill: #949393;
-}
-.svgResultStatus > circle.paused {
-  fill: #24b0d5;
-}
-.svgResultStatus > circle.unknown {
-  fill: #d54cc4;
 }
 .pipeline-node-selected .svgResultStatus > circle {
   stroke: none;

@@ -1,7 +1,7 @@
 <template>
   <g>
     <path v-if="y1!=y2" stroke-width="3.5" stroke="#949393" :d="getPath()" fill="none"> </path>
-    <line v-if="y1==y2" class="pipeline-connector" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10" :y2="y2" ></line>
+    <line v-if="y1==y2" class="pipeline-connector" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10" :y2="y2"></line>
   </g>
 </template>
 
@@ -37,7 +37,7 @@ export default {
         const d = `M ${this.x1 + 10} ${this.y1}\
             l ${mid} 0\
             ${rt} \
-            l 0 ${midy-24} \
+            l 0 ${midy - 24} \
             ${lb} \
             l ${mid} 0
         `;
@@ -46,9 +46,9 @@ export default {
         const d = `M ${this.x1 + 10} ${this.y1}\
             l ${mid} 0\
             ${rb} \
-            l 0 -${midy-24} \
+            l 0 -${midy - 24} \
             ${lt} \
-            l ${mid-60} 0
+            l ${mid - 60} 0
         `;
         return d;
       }
@@ -58,3 +58,8 @@ export default {
   }
 };
 </script>
+<style lang="css">
+.pipeline-connector {
+  stroke: #949393;
+}
+</style>

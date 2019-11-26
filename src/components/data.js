@@ -1,13 +1,13 @@
 let hue = {
     nodes: [
-        { name: "test0", time: '1m23s' },
-        { name: "Ammouncement Import", time: '1m23s' },
-        { name: "Personal Basic Info", time: '2m23s' },
-        { name: "Address Info", time: '2m23s' },
-        { name: "Family Info", time: '2m23s' },
-        { name: "Education Info", time: '2m23s' },
-        { name: "Degree Info", time: '2m23s' },
-        { name: "test7", time: '2m23s' },
+        { name: "test0", time: '1m23s', status: 'success' },
+        { name: "Ammouncement Import", time: '1m23s', status: 'success' },
+        { name: "Personal Basic Info", time: '2m23s', status: 'unstable' },
+        { name: "Address Info", time: '2m23s', status: 'success' },
+        { name: "Family Info", time: '2m23s', status: 'failure' },
+        { name: "Education Info", time: '2m23s', status: 'success' },
+        { name: "Degree Info", time: '2m23s', status: 'paused' },
+        { name: "test7", time: '2m23s', status: 'failure' },
     ],
     matrix: [
         [0, 1, 0, 0, 0, 0, 0, 0],
