@@ -13,10 +13,10 @@
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
         :y2="item.y2" />
 
-      <g transform="translate(900,55)" class="pipeline-node">
+      <!-- <g transform="translate(900,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
         <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
-      </g>
+      </g> -->
     </svg>
 
   </div>
@@ -35,9 +35,13 @@ export default {
       type: Number,
       default: 55
     },
-    step: {
+    xstep: {
       type: Number,
-      default: 170
+      default: 150
+    },
+    ystep: {
+      type: Number,
+      default: 60
     }
   },
   data() {
@@ -71,7 +75,7 @@ export default {
     optimize() {
       for (let i = 0; i < this.nodeList.length; i++) {
         let node = this.nodeList[i];
-        if (node.y == 55) {
+        if (node.y == this.y) {
           // 第一行不变
           continue;
         }
@@ -106,29 +110,29 @@ export default {
       }
       return arr;
     },
-    bfs(index) {
+    bfs(index, x) {
       const matrix = this.data.matrix;
       const queue = [];
       let node = this.data.nodes[index];
-      node.x = 265;
-      node.y = 55;
-      node.index = 0;
+      node.x = x;
+      node.y = this.y;
+      node.index = index;
       queue.push(node);
-      this.nodeList[0] = node;
+      this.nodeList[index] = node;
       while (queue.length > 0) {
         let first = queue.shift();
-        let y = 55;
+        let y = this.y;
         for (let i = 0; i < matrix[first.index].length; i++) {
           if (matrix[first.index][i] == 1) {
             let child = this.data.nodes[i];
             if (this.nodeList[i]) {
-              child.x = Math.max(first.x + this.step, this.nodeList[i].x);
+              child.x = Math.max(first.x + this.xstep, this.nodeList[i].x);
             } else {
-              child.x = first.x + this.step;
+              child.x = first.x + this.xstep;
             }
             child.y = y;
             child.index = i;
-            y += 70;
+            y += this.ystep;
             queue.push(child);
             this.nodeList[i] = child;
           }
@@ -139,8 +143,14 @@ export default {
     }
   },
   mounted() {
-    this.bfs(0);
-
+    this.bfs(0, 265);
+    for (let i = 0; i < this.data.matrix.length; i++) {
+      if (!this.nodeList[i]) {
+        // if this is independent node, append it to the tail.
+        let maxX = Math.max(...this.nodeList.map(it => it.x));
+        this.bfs(i, maxX + this.xstep);
+      }
+    }
     this.optimize();
     this.getLines();
   }
@@ -148,9 +158,6 @@ export default {
 </script>
 
 <style >
-
-
-
 .pipeline-node-terminal {
   fill: #949393;
 }
@@ -179,9 +186,7 @@ export default {
 .svgResultStatus.no-background .circle-bg {
   opacity: 0;
 }
-.pipeline-node-selected .svgResultStatus > circle {
-  stroke: none;
-}
+
 .jdl-table td .svgResultStatus {
   vertical-align: middle;
 }
