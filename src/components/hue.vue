@@ -90,7 +90,7 @@ export default {
   color: #8a8a8a;
   text-align: center;
   width: 60px;
-  border-radius: 25%;
+  border-radius: 30px;
   border-width: 3px;
   border-style: solid;
 }
