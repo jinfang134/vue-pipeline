@@ -6,18 +6,20 @@
     > -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <Pipeline />
+    <hue/>
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import Pipeline from "./components/Pipeline.vue";
-
+import hue from './components/hue.vue'
 export default {
   name: "app",
   components: {
     HelloWorld,
-    Pipeline
+    Pipeline,
+    hue
   }
 };
 </script>
