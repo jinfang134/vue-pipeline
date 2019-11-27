@@ -96,7 +96,7 @@ export default {
 }
 .line {
   color: #8a8a8a;
-  border-top-width: 4px;
+  border-top-width: 3px;
   width: 120px;
   height: 1px;
   border-top-style: solid;

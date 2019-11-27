@@ -67,7 +67,7 @@ export default {
       // eslint-disable-next-line no-console
       console.log("click", this.node);
       this.nodeClass = "pipeline-node-selected";
-      this.selected = true;
+      // this.selected = true;
       this.$emit("click", this.node);
     },
     getTextWidth(text, font) {

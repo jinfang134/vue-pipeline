@@ -11,7 +11,7 @@
       <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" />
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
-        :y2="item.y2" />
+        :y2="item.y2" :xstep="xstep" />
 
       <!-- <g transform="translate(900,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
@@ -37,11 +37,15 @@ export default {
     },
     xstep: {
       type: Number,
-      default: 150
+      default: 120
     },
     ystep: {
       type: Number,
-      default: 60
+      default: 50
+    },
+    xstart: {
+      type: Number,
+      default: 50
     }
   },
   data() {
@@ -52,11 +56,12 @@ export default {
     };
   },
   methods: {
+    checkCircle() {},
     getLines() {
       for (let i = 0; i < this.data.nodes.length; i++) {
         let node = this.data.nodes[i];
-        if(!node.next){
-            continue;
+        if (!node.next) {
+          continue;
         }
         for (let j = 0; j < node.next.length; j++) {
           let childIndex = node.next[j];
@@ -104,12 +109,13 @@ export default {
     },
     // 查找子节点
     findChildren(index) {
-      return this.data.nodes[index].next;
+      return this.data.nodes[index].next || [];
     },
     // from the (index)th node to bfs, set the x coordinate of the first to x
     bfs(index, x) {
-      const matrix = this.data.matrix;
       const queue = [];
+      const visited = [];
+      let xlist = []; //在当前x坐标上的y坐标列表, 如{120:70,240:80}
       let node = this.data.nodes[index];
       node.x = x;
       node.y = this.y;
@@ -119,33 +125,38 @@ export default {
       while (queue.length > 0) {
         let first = queue.shift();
         let y = this.y;
+        visited[first.index] = true;
         if (!first.next) {
           continue;
         }
         for (let i = 0; i < first.next.length; i++) {
           let childIndex = first.next[i];
           let child = this.data.nodes[childIndex];
-          if (this.nodeList[childIndex]) {
+          if (visited[childIndex] == true) {
+            //已经有坐标,则更新坐标
             child.x = Math.max(
               first.x + this.xstep,
               this.nodeList[childIndex].x
             );
-          } else {
-            child.x = first.x + this.xstep;
+            console.log(childIndex, child.x, this.nodeList[childIndex].x);
+            continue;
           }
+          child.x = first.x + this.xstep;
           child.y = y;
-          child.index = childIndex;
           y += this.ystep;
+          child.index = childIndex;
           queue.push(child);
+          //   visited[childIndex] = true;
           this.nodeList[childIndex] = child;
         }
+        console.log(xlist);
       }
       // eslint-disable-next-line no-console
       console.log("node list", this.nodeList);
     }
   },
   mounted() {
-    this.bfs(0, 265);
+    this.bfs(0, this.xstart);
     for (let i = 0; i < this.data.nodes.length; i++) {
       if (!this.nodeList[i]) {
         // if this is independent node, append it to the tail.
