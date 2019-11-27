@@ -2,108 +2,172 @@
 
 const data = require('./data.js')
 
-const visited = []
 
+class Pipeline {
 
-/**
- * 查找最长路径经过的节点
- * @param {} nodes 
- * @param {*} index 
- */
-function findLongestWay(nodes, index) {
-    if (!nodes[index].next || nodes[index].next.length == 0) {
-        return [index]
+    constructor(nodes, start, startx, starty, xstep, ystep) {
+        this.nodes = nodes;
+        this.start = start;
+        this.startx = startx;
+        this.starty = starty;
+        this.xstep = xstep;
+        this.ystep = ystep;
+        this.positionList = []
+        this.solvedList = []
     }
-    let arr = [],
-        maxLength = 0;
-    for (let i = 0; i < nodes[index].next.length; i++) {
-        let list = findLongestWay(nodes, nodes[index].next[i])
-        if (list.length > maxLength) {
-            maxLength = list.length;
-            arr = list.slice();
+
+    /**
+     * 计算每个点的坐标
+     */
+    calculateAllPosition() {
+        // 查找最长的路径，并为其分配坐标
+        let list = this.findLongestWay(0)
+        list.forEach((it, index) => {
+            this.nodes[it].x = this.startx + this.xstep * index
+            this.nodes[it].y = this.starty
+            this.positionList.push([this.nodes[it].x, this.nodes[it].y])
+        })
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            if (!this.nodes[i].x) {
+                //往前找到第一个解决的父节点
+                let fatherIndex = this.findSolvedFather(i)
+                if (fatherIndex != null) {
+
+                    let [x, y] = this.assignChild(fatherIndex)
+                    this.nodes[i].x = x
+                    this.nodes[i].y = y
+                    this.positionList.push([x, y])
+                }
+            }
         }
     }
-    return [index].concat(arr);
-}
 
-function findParents(nodes, index) {
-    let arr = [];
-    for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i].next && nodes[i].next.includes(index)) {
-            arr.push(i);
+    /**
+     * 为孩子节点分配一个新的坐标
+     * @param {*} fatherIndex 
+     */
+    assignChild(fatherIndex) {
+        let father = this.nodes[fatherIndex]
+        let x = father.x + this.xstep;
+        let y = father.y;
+        while (this.existPosition(x, y)) {
+            y += this.ystep;
         }
+        return [x, y]
     }
-    return arr;
-}
 
-/**
- * 计算每个点的坐标
- * @param {*} nodes 
- * @param {*} start 起点的下标
- * @param {Number} startx x轴起点
- * @param {Number} starty y轴起点
- * 
- */
-function calculatePosition(nodes, start, startx, starty, xstep,ystep) {
-    let list = findLongestWay(nodes, start)
-    list.forEach((it, index) => {
-        visited[it] = true
-        nodes[it].x = startx + xstep * index
-        nodes[it].y = starty
-    })
-    let result = bfs(nodes, start, startx)
+    /**
+     * 判断坐标是否存在 
+     * @param {*} x 
+     * @param {*} y 
+     */
+    existPosition(x, y) {
+        return this.positionList.some(([xx, yy]) => xx == x && yy == y)
+    }
 
 
+    /**
+     * 往前找到第一个解决的父节点
+     * @param {*} index 
+     */
+    findSolvedFather(index) {
+        let list = this.findParents(index)
+        if (list.length == 0) {
+            return null;
+        }
+        for (let i = 0; i < list.length; i++) {
+            if (this.nodes[list[i]].x) {
+                return list[i]
+            } else {
+                return this.findSolvedFather(list[i])
+            }
+        }
 
-    // from the (index)th node to bfs, set the x coordinate of the first to x
-    function bfs(nodes, index, x ) {
+    }
+
+
+
+    /**
+     * 查找某个顶点的父顶点
+     * @param {*} nodes 
+     * @param {*} index 
+     */
+    findParents(index) {
+        let arr = [];
+        for (let i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i].next && this.nodes[i].next.includes(index)) {
+                arr.push(i);
+            }
+        }
+        return arr;
+    }
+
+
+    /**
+     * 查找从第{index}个节点开始的最长路径，返回经过的节点
+     * @param {*} index 
+     */
+    findLongestWay(index) {
+        if (!this.nodes[index].next || this.nodes[index].next.length == 0) {
+            return [index]
+        }
+        let arr = [],
+            maxLength = 0;
+        for (let i = 0; i < this.nodes[index].next.length; i++) {
+            let list = this.findLongestWay(this.nodes[index].next[i])
+            if (list.length > maxLength) {
+                maxLength = list.length;
+                arr = list.slice();
+            }
+        }
+        return [index].concat(arr);
+    }
+
+
+    /**
+     * 从第{index}个节点出发，深度优先搜索图
+     * @param {*} nodes 
+     * @param {*} index 
+     */
+    dfs(index) {
         const queue = [];
-        const visited = [];
-        let result = []
-        let xlist = []; //在当前x坐标上的y坐标列表, 如{120:70,240:80}
-        let node = nodes[index];
-        node.x = x;
-        node.y = starty;
-        node.index = index;
-        queue.push(node);
-        result[index] = node;
+        const visited = []
+        const result = []
+        visited[index] = true;
+        queue.push(index)
+
         while (queue.length > 0) {
-            let first = queue.shift();
-            let y = starty;
-            visited[first.index] = true;
-            if (!first.next) {
+            let first = queue.pop();
+            visited[first] = true
+            console.log(first)
+            result.push(first)
+            if (!this.nodes[first].next) {
                 continue;
             }
-            for (let i = 0; i < first.next.length; i++) {
-                let childIndex = first.next[i];
-                let child = nodes[childIndex];
-                if (visited[childIndex] == true) {
-                    //已经有坐标,则更新坐标
-                    child.x = Math.max(
-                        first.x + xstep,
-                        result[childIndex].x
-                    );
-                    console.log(childIndex, child.x, result[childIndex].x);
-                    continue;
+            for (let i = 0; i < this.nodes[first].next.length; i++) {
+                let j = this.nodes[first].next[i]
+                if (!visited[j]) {
+                    queue.push(j)
+                    visited[j] = true
                 }
-                child.x = first.x + xstep;
-                child.y = y;
-                y += ystep;
-                child.index = childIndex;
-                queue.push(child);
-                //   visited[childIndex] = true;
-                result[childIndex] = child;
             }
-            console.log(xlist);
         }
-        console.log("node list", result);
         return result;
     }
 
-
 }
 
-
-
 // eslint-disable-next-line no-console
-console.log(findLongestWay(data.nodes, 0))
+// let pipeline = new Pipeline(data.nodes, 0, 50, 55, 120, 50)
+// // console.log(pipeline.dfs(0))
+// pipeline.calculateAllPosition()
+// // console.log(pipeline.findLongestWay(3))
+// console.log(JSON.stringify(pipeline.nodes))
+
+// module.exports={
+//     Pipeline
+// }
+export  {
+    Pipeline
+}

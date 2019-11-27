@@ -25,6 +25,8 @@
 import PipelineNode from "./PipelineNode";
 import PipelineLine from "./PipelineLine";
 import data from "./data.js";
+import { Pipeline } from "./service";
+
 export default {
   components: {
     PipelineNode,
@@ -41,7 +43,7 @@ export default {
     },
     ystep: {
       type: Number,
-      default: 50
+      default: 70
     },
     xstart: {
       type: Number,
@@ -52,7 +54,15 @@ export default {
     return {
       data: data,
       nodeList: [],
-      lineList: []
+      lineList: [],
+      service: new Pipeline(
+        data.nodes,
+        0,
+        this.xstart,
+        55,
+        this.xstep,
+        this.ystep
+      )
     };
   },
   methods: {
@@ -85,14 +95,14 @@ export default {
           // 第一行不变
           continue;
         }
-        let parents = this.findParents(node.index);
-        let children = this.findChildren(node.index);
+        let parents = this.findParents(i);
+        let children = this.findChildren(i);
         // eslint-disable-next-line no-console
         console.log(parents, children);
         let startx = Math.max(...parents.map(item => this.nodeList[item].x));
         let endx = Math.min(...children.map(item => this.nodeList[item].x));
         node.x = (startx + endx) / 2;
-        this.nodeList[node.index] = node;
+        this.nodeList[i] = node;
       }
     },
     findParents(index) {
@@ -110,60 +120,21 @@ export default {
     // 查找子节点
     findChildren(index) {
       return this.data.nodes[index].next || [];
-    },
-    // from the (index)th node to bfs, set the x coordinate of the first to x
-    bfs(index, x) {
-      const queue = [];
-      const visited = [];
-      let xlist = []; //在当前x坐标上的y坐标列表, 如{120:70,240:80}
-      let node = this.data.nodes[index];
-      node.x = x;
-      node.y = this.y;
-      node.index = index;
-      queue.push(node);
-      this.nodeList[index] = node;
-      while (queue.length > 0) {
-        let first = queue.shift();
-        let y = this.y;
-        visited[first.index] = true;
-        if (!first.next) {
-          continue;
-        }
-        for (let i = 0; i < first.next.length; i++) {
-          let childIndex = first.next[i];
-          let child = this.data.nodes[childIndex];
-          if (visited[childIndex] == true) {
-            //已经有坐标,则更新坐标
-            child.x = Math.max(
-              first.x + this.xstep,
-              this.nodeList[childIndex].x
-            );
-            console.log(childIndex, child.x, this.nodeList[childIndex].x);
-            continue;
-          }
-          child.x = first.x + this.xstep;
-          child.y = y;
-          y += this.ystep;
-          child.index = childIndex;
-          queue.push(child);
-          //   visited[childIndex] = true;
-          this.nodeList[childIndex] = child;
-        }
-        console.log(xlist);
-      }
-      // eslint-disable-next-line no-console
-      console.log("node list", this.nodeList);
     }
   },
   mounted() {
-    this.bfs(0, this.xstart);
-    for (let i = 0; i < this.data.nodes.length; i++) {
-      if (!this.nodeList[i]) {
-        // if this is independent node, append it to the tail.
-        let maxX = Math.max(...this.nodeList.map(it => it.x));
-        this.bfs(i, maxX + this.xstep);
-      }
-    }
+    this.service = new Pipeline(
+      data.nodes,
+      0,
+      this.xstart,
+      55,
+      this.xstep,
+      this.ystep
+    );
+    this.service.calculateAllPosition();
+    this.data.nodes = this.service.nodes;
+    this.nodeList = this.service.nodes;
+    console.log(this.nodeList);
     // this.optimize();
     this.getLines();
   }
