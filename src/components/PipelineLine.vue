@@ -43,6 +43,8 @@ export default {
         `;
         return d;
       } else {
+        // 左下到右上
+        let lastCorner = this.x2 - 10 - 50;
         const d = `M ${this.x1 + 10} ${this.y1}\
             l ${mid} 0\
             ${rb} \

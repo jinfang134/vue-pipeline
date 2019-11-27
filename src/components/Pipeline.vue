@@ -2,11 +2,11 @@
 <template>
   <div class="PipelineGraph" style="position: relative; overflow: visible;">
     <svg width="1248" height="350">
-
-      <g transform="translate(60,55)" class="pipeline-node">
+      <!-- start node -->
+      <!-- <g transform="translate(60,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
         <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
-      </g>
+      </g> -->
 
       <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" />
@@ -53,19 +53,20 @@ export default {
   },
   methods: {
     getLines() {
-      let matrix = this.data.matrix;
-      for (let i = 0; i < matrix.length; i++) {
+      for (let i = 0; i < this.data.nodes.length; i++) {
         let node = this.data.nodes[i];
-        for (let j = i; j < matrix[i].length; j++) {
-          if (matrix[i][j] == 1) {
-            let child = this.data.nodes[j];
-            this.lineList.push({
-              x1: node.x,
-              y1: node.y,
-              x2: child.x,
-              y2: child.y
-            });
-          }
+        if(!node.next){
+            continue;
+        }
+        for (let j = 0; j < node.next.length; j++) {
+          let childIndex = node.next[j];
+          let child = this.data.nodes[childIndex];
+          this.lineList.push({
+            x1: node.x,
+            y1: node.y,
+            x2: child.x,
+            y2: child.y
+          });
         }
       }
       // eslint-disable-next-line no-console
@@ -91,9 +92,11 @@ export default {
     },
     findParents(index) {
       let arr = [];
-      let matrix = this.data.matrix;
-      for (let i = 0; i < this.data.matrix.length; i++) {
-        if (matrix[i][index] == 1) {
+      for (let i = 0; i < this.data.nodes.length; i++) {
+        if (
+          this.data.nodes[i].next &&
+          this.data.nodes[i].next.includes(index)
+        ) {
           arr.push(i);
         }
       }
@@ -101,14 +104,7 @@ export default {
     },
     // 查找子节点
     findChildren(index) {
-      let arr = [];
-      let matrix = this.data.matrix;
-      for (let i = 0; i < matrix[index].length; i++) {
-        if (matrix[index][i] == 1) {
-          arr.push(i);
-        }
-      }
-      return arr;
+      return this.data.nodes[index].next;
     },
     // from the (index)th node to bfs, set the x coordinate of the first to x
     bfs(index, x) {
@@ -123,20 +119,25 @@ export default {
       while (queue.length > 0) {
         let first = queue.shift();
         let y = this.y;
-        for (let i = 0; i < matrix[first.index].length; i++) {
-          if (matrix[first.index][i] == 1) {
-            let child = this.data.nodes[i];
-            if (this.nodeList[i]) {
-              child.x = Math.max(first.x + this.xstep, this.nodeList[i].x);
-            } else {
-              child.x = first.x + this.xstep;
-            }
-            child.y = y;
-            child.index = i;
-            y += this.ystep;
-            queue.push(child);
-            this.nodeList[i] = child;
+        if (!first.next) {
+          continue;
+        }
+        for (let i = 0; i < first.next.length; i++) {
+          let childIndex = first.next[i];
+          let child = this.data.nodes[childIndex];
+          if (this.nodeList[childIndex]) {
+            child.x = Math.max(
+              first.x + this.xstep,
+              this.nodeList[childIndex].x
+            );
+          } else {
+            child.x = first.x + this.xstep;
           }
+          child.y = y;
+          child.index = childIndex;
+          y += this.ystep;
+          queue.push(child);
+          this.nodeList[childIndex] = child;
         }
       }
       // eslint-disable-next-line no-console
@@ -145,14 +146,14 @@ export default {
   },
   mounted() {
     this.bfs(0, 265);
-    for (let i = 0; i < this.data.matrix.length; i++) {
+    for (let i = 0; i < this.data.nodes.length; i++) {
       if (!this.nodeList[i]) {
         // if this is independent node, append it to the tail.
         let maxX = Math.max(...this.nodeList.map(it => it.x));
         this.bfs(i, maxX + this.xstep);
       }
     }
-    this.optimize();
+    // this.optimize();
     this.getLines();
   }
 };

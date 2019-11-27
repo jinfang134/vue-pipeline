@@ -2,12 +2,12 @@
   <div class="page">
     <div class="container">
       <div class="start">start</div>
-      <div class="line" style="margin-right:-60px;"></div>
+      <div class="line" ></div>
       <div class="node">
         <span class="label">Ammouncement Import</span>
         <div class="circle success" style=" margin-bottom: 20px;"></div>
       </div>
-      <div class="line" style="margin-left: -60px;"></div>
+      <div class="line" ></div>
       <img src="../assets/brace.svg" class="brace">
       <div class="status-list">
         <div class="info-item">
@@ -73,7 +73,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin:0px -60px 10px -60px;
 }
 .node .label {
   margin-bottom: 12px;
