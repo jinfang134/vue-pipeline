@@ -8,7 +8,8 @@
     {{msg}}
     <Pipeline :data="data.hue1.nodes" :height="400" :xstep="140" @select="handleSelect" />
     <Pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" />
-    <Pipeline :data="data.sample.nodes" :height="300" @select="handleSelect" />
+    <Pipeline :data="data.sample.nodes" :height="400" @select="handleSelect" />
+    <Pipeline :data="data.sample3.nodes" :height="400" @select="handleSelect" />
     <hue />
   </div>
 </template>
