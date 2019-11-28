@@ -1,9 +1,9 @@
 <template>
   <g>
-    <path v-if="y1!=y2" stroke-width="3.5" stroke="#949393" :d="getPath()" fill="none"> </path>
-    <line v-if="y1==y2&&x2-x1==xstep" class="pipeline-connector" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10"
+    <path v-if="y1!=y2" stroke-width="3.5" :stroke="color()" :d="getPath()" fill="none"> </path>
+    <line v-if="y1==y2&&x2-x1==xstep" :stroke="color()" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10"
       :y2="y2"></line>
-    <path v-if="y1==y2&&x2-x1>xstep" stroke-width="3.5" stroke="#949393" :d="getPath2()" fill="none"> </path>
+    <path v-if="y1==y2&&x2-x1>xstep" stroke-width="3.5" :stroke="color()" :d="getPath2()" fill="none"> </path>
 
   </g>
 </template>
@@ -25,17 +25,41 @@ export default {
     },
     xstep: {
       type: Number
+    },
+    weight: {
+      type: Number,
+      default: 0
     }
   },
   data() {
-    return {};
+    return {
+      // color: "949393"
+    };
+  },
+  computed: {
+    
   },
   methods: {
-    getPath2(){
-       const d = `M ${this.x1 + 10} ${this.y1}\
-            S ${this.x1+120} ${this.y1+100} ${this.x2-10} ${this.y2}
+    color() {
+      if(!this.weight) {
+        return '#949393'
+      }
+      switch (this.weight) {
+        case 0:
+          return "#949393";
+        case 1:
+          return "#ddd";
+        case 2:
+          return "#8cc04f";
+        default:
+          break;
+      }
+    },
+    getPath2() {
+      const d = `M ${this.x1 + 10} ${this.y1}\
+            S ${this.x1 + 120} ${this.y1 + 100} ${this.x2 - 10} ${this.y2}
         `;
-        return d;
+      return d;
     },
     getPath() {
       const lb = "c 0 12 12 12 12 12";

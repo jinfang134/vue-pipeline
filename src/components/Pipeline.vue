@@ -1,7 +1,7 @@
 
 <template>
   <div class="PipelineGraph" style="position: relative; overflow: visible;">
-    <svg width="1248" height="350">
+    <svg width="1248" height="550">
       <!-- start node -->
       <!-- <g transform="translate(60,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
@@ -11,7 +11,7 @@
       <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" />
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
-        :y2="item.y2" :xstep="xstep" />
+        :y2="item.y2" :xstep="xstep" :weight="item.weight" />
 
       <!-- <g transform="translate(900,55)" class="pipeline-node">
         <circle r="7" class="pipeline-node-terminal"></circle>
@@ -39,11 +39,11 @@ export default {
     },
     xstep: {
       type: Number,
-      default: 120
+      default: 150
     },
     ystep: {
       type: Number,
-      default: 70
+      default: 50
     },
     xstart: {
       type: Number,
@@ -67,26 +67,7 @@ export default {
   },
   methods: {
     checkCircle() {},
-    getLines() {
-      for (let i = 0; i < this.data.nodes.length; i++) {
-        let node = this.data.nodes[i];
-        if (!node.next) {
-          continue;
-        }
-        for (let j = 0; j < node.next.length; j++) {
-          let childIndex = node.next[j];
-          let child = this.data.nodes[childIndex];
-          this.lineList.push({
-            x1: node.x,
-            y1: node.y,
-            x2: child.x,
-            y2: child.y
-          });
-        }
-      }
-      // eslint-disable-next-line no-console
-      console.log(this.lineList);
-    },
+
     // 优化节点的位置
     optimize() {
       for (let i = 0; i < this.nodeList.length; i++) {
@@ -105,22 +86,7 @@ export default {
         this.nodeList[i] = node;
       }
     },
-    findParents(index) {
-      let arr = [];
-      for (let i = 0; i < this.data.nodes.length; i++) {
-        if (
-          this.data.nodes[i].next &&
-          this.data.nodes[i].next.includes(index)
-        ) {
-          arr.push(i);
-        }
-      }
-      return arr;
-    },
-    // 查找子节点
-    findChildren(index) {
-      return this.data.nodes[index].next || [];
-    }
+  
   },
   mounted() {
     this.service = new Pipeline(
@@ -134,9 +100,9 @@ export default {
     this.service.calculateAllPosition();
     this.data.nodes = this.service.nodes;
     this.nodeList = this.service.nodes;
-    console.log(this.nodeList);
+    // console.log(this.nodeList);
     // this.optimize();
-    this.getLines();
+    this.lineList = this.service.getLines();
   }
 };
 </script>

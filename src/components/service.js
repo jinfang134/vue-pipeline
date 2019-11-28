@@ -12,8 +12,36 @@ class Pipeline {
         this.starty = starty;
         this.xstep = xstep;
         this.ystep = ystep;
-        this.positionList = []
-        this.solvedList = []
+        this.positionList = [];
+        this.solvedList = [];
+        // this.lineList = []
+
+    }
+
+    getLines() {
+        let list = [];
+        for (let i = 0; i < this.nodes.length; i++) {
+            let node = this.nodes[i];
+            if (!node.next) {
+                continue;
+            }
+            console.log(node.name, JSON.stringify(node.next))
+            for (let j = 0; j < node.next.length; j++) {
+                let edge = node.next[j];
+                let child = this.nodes[edge.index];
+                list.push({
+                    x1: node.x,
+                    y1: node.y,
+                    x2: child.x,
+                    y2: child.y,
+                    weight: edge.weight
+                });
+                console.log(i, edge.index, node.x, node.y, child.x, child.y, edge.weight);
+            }
+        }
+        // eslint-disable-next-line no-console
+        console.log(list);
+        return list;
     }
 
     /**
@@ -49,7 +77,7 @@ class Pipeline {
      */
     assignChild(fatherIndex) {
         let father = this.nodes[fatherIndex]
-        let x = father.x + this.xstep;
+        let x = father.x + this.xstep ;
         let y = father.y;
         while (this.existPosition(x, y)) {
             y += this.ystep;
@@ -96,11 +124,18 @@ class Pipeline {
     findParents(index) {
         let arr = [];
         for (let i = 0; i < this.nodes.length; i++) {
-            if (this.nodes[i].next && this.nodes[i].next.includes(index)) {
+            if (this.nodes[i].next && this.nodes[i].next.some(it => it.index == index)) {
                 arr.push(i);
             }
         }
         return arr;
+    }
+
+    findChildren(index) {
+        if (!this.nodes[index].next) {
+            return []
+        }
+        return this.nodes[index].next.map(it => it.index)
     }
 
 
@@ -109,13 +144,14 @@ class Pipeline {
      * @param {*} index 
      */
     findLongestWay(index) {
-        if (!this.nodes[index].next || this.nodes[index].next.length == 0) {
+        let children = this.findChildren(index)
+        if (children.length == 0) {
             return [index]
         }
         let arr = [],
             maxLength = 0;
-        for (let i = 0; i < this.nodes[index].next.length; i++) {
-            let list = this.findLongestWay(this.nodes[index].next[i])
+        for (let i = 0; i < children.length; i++) {
+            let list = this.findLongestWay(children[i])
             if (list.length > maxLength) {
                 maxLength = list.length;
                 arr = list.slice();
@@ -142,11 +178,9 @@ class Pipeline {
             visited[first] = true
             console.log(first)
             result.push(first)
-            if (!this.nodes[first].next) {
-                continue;
-            }
-            for (let i = 0; i < this.nodes[first].next.length; i++) {
-                let j = this.nodes[first].next[i]
+            let children = this.findChildren(first)
+            for (let i = 0; i < children.length; i++) {
+                let j = children[i]
                 if (!visited[j]) {
                     queue.push(j)
                     visited[j] = true
@@ -158,16 +192,17 @@ class Pipeline {
 
 }
 
-// eslint-disable-next-line no-console
 // let pipeline = new Pipeline(data.nodes, 0, 50, 55, 120, 50)
-// // console.log(pipeline.dfs(0))
-// pipeline.calculateAllPosition()
-// // console.log(pipeline.findLongestWay(3))
+// console.log(pipeline.dfs(0))
+// let list=pipeline.findParents(3)
+// console.log(JSON.stringify(list))
+// // pipeline.calculateAllPosition()
+// // console.log(pipeline.findLongestWay(0))
 // console.log(JSON.stringify(pipeline.nodes))
 
 // module.exports={
 //     Pipeline
 // }
-export  {
+export {
     Pipeline
 }
