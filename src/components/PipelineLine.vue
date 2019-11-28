@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      ystep: this.y1 + 30
     };
   },
   computed: {},
@@ -50,9 +51,30 @@ export default {
       }
     },
     getPath2() {
-      const d = `M ${this.x1 + 10} ${this.y1}\
-            S ${this.x1 + 120} ${this.y1 + 100} ${this.x2 - 10} ${this.y2}
-        `;
+      let start = this.x1 + 10;
+      let number = parseInt((this.x2 - this.x1) / this.xstep);
+
+      let control1 = this.xstep / 2 + 40;
+      let control2 = this.xstep / 2 + 30;
+
+      let d = `M ${start} ${this.y1} \
+          l 20 0\
+         C ${this.x1 + control1},${this.y1} \
+          ${this.x1 + control2},${this.ystep} \
+           ${this.x1 + this.xstep},${this.ystep}`;
+      if (number > 2) {
+        d += `l ${this.xstep * (number - 2)} 0`;
+      }
+
+      d += `C ${this.x2 - control2},${this.ystep} \
+      ${this.x2 - control1},${this.y1} \
+      ${this.x2 - 10 - 20},${this.y2} \
+      l 20 0`;
+
+      // const d = `M ${this.x1 + 10} ${this.y1}\
+      //       S ${this.x1 + 120} ${this.y1 + 100} ${this.x2 - 10} ${this.y2}
+      //   `;
+      console.log(d);
       return d;
     },
     getPath() {
@@ -85,7 +107,6 @@ export default {
         // console.log(d)
         return d;
       }
-
     }
   }
 };
