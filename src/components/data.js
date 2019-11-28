@@ -1,16 +1,32 @@
-const hue = {
+
+const hue3 = {
     nodes: [
-        { name: "Start", hint: '1m23s', status: 'success', next: [1] },
-        { name: "Ammouncement Import", hint: '1m23s', status: 'success', next: [2, 3, 4, 5, 6] },
-        { name: "Personal Basic Info", hint: '2m23s', status: 'unstable', next: [7] },
-        { name: "Address Info", hint: '2m23s', status: 'success', next: [7] },
-        { name: "Family Info", hint: '2m23s', status: 'failure', next: [7] },
-        { name: "Family In", hint: '2m23s', status: 'failure', next: [7] },
-        { name: "Education Info", hint: '2m23s', status: 'success', next: [7] },
-        { name: "Degree Info", hint: '2m23s', status: 'paused', next: [8] },
-        { name: "End", hint: '2m23s', status: 'failure' },
+        {
+            name: "Start", hint: '1m23s', status: 'success', next: [
+                { index: 1, weight: 2}
+            ]
+        },
+        {
+            name: "Ammouncement Import", hint: '1m23s', status: 'success', next: [
+                { index: 2, weight: 0 },
+                { index: 3, weight: 2 }
+            ]
+        },
+        {
+            name: "Employee ID to Onboarding", hint: '2m23s', status: 'failure', next: [
+                { index: 3, weight: 0 },
+              
+            ]
+        },
+        {
+            name: "Personal Basic Info", hint: '2m23s', status: 'success', next: [
+                { index: 4, weight: 2 },
+            ]
+        },
+        { name: "End", hint: '2m23s', status: 'paused', next: [] },
     ],
 }
+
 
 const hue1 = {
     nodes: [
@@ -125,5 +141,5 @@ const sample2 = {
     ],
 }
 
-module.exports= hue1
+module.exports= hue3
 // export default hue1

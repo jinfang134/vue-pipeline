@@ -1,8 +1,8 @@
 <template>
   <g>
     <path v-if="y1!=y2" stroke-width="3.5" :stroke="color()" :d="getPath()" fill="none"> </path>
-    <line v-if="y1==y2&&x2-x1==xstep" :stroke="color()" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10"
-      :y2="y2"></line>
+    <line v-if="y1==y2&&x2-x1==xstep" :stroke="color()" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10" :y2="y2">
+    </line>
     <path v-if="y1==y2&&x2-x1>xstep" stroke-width="3.5" :stroke="color()" :d="getPath2()" fill="none"> </path>
 
   </g>
@@ -33,22 +33,16 @@ export default {
   },
   data() {
     return {
-      // color: "949393"
     };
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
     color() {
-      if(!this.weight) {
-        return '#949393'
-      }
       switch (this.weight) {
         case 0:
-          return "#949393";
-        case 1:
           return "#ddd";
+        case 1:
+          return "#949393";
         case 2:
           return "#8cc04f";
         default:
@@ -92,7 +86,6 @@ export default {
         return d;
       }
 
-      //   return pathData;
     }
   }
 };

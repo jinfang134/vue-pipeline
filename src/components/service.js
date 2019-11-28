@@ -12,7 +12,7 @@ class Pipeline {
         this.starty = starty;
         this.xstep = xstep;
         this.ystep = ystep;
-        this.positionList = [];
+        this.positionList = new Set();
         this.solvedList = [];
         // this.lineList = []
 
@@ -40,7 +40,9 @@ class Pipeline {
             }
         }
         // eslint-disable-next-line no-console
+        list.sort((a, b) => a.weight - b.weight)
         console.log(list);
+
         return list;
     }
 
@@ -53,7 +55,7 @@ class Pipeline {
         list.forEach((it, index) => {
             this.nodes[it].x = this.startx + this.xstep * index
             this.nodes[it].y = this.starty
-            this.positionList.push([this.nodes[it].x, this.nodes[it].y])
+            this.positionList.add(`${this.nodes[it].x},${this.nodes[it].y}`)
         })
 
         for (let i = 0; i < this.nodes.length; i++) {
@@ -65,7 +67,7 @@ class Pipeline {
                     let [x, y] = this.assignChild(fatherIndex)
                     this.nodes[i].x = x
                     this.nodes[i].y = y
-                    this.positionList.push([x, y])
+                    this.positionList.add(`${x},${y}`)
                 }
             }
         }
@@ -77,7 +79,7 @@ class Pipeline {
      */
     assignChild(fatherIndex) {
         let father = this.nodes[fatherIndex]
-        let x = father.x + this.xstep ;
+        let x = father.x + this.xstep;
         let y = father.y;
         while (this.existPosition(x, y)) {
             y += this.ystep;
@@ -91,7 +93,7 @@ class Pipeline {
      * @param {*} y 
      */
     existPosition(x, y) {
-        return this.positionList.some(([xx, yy]) => xx == x && yy == y)
+        return this.positionList.has(`${x},${y}`)
     }
 
 
