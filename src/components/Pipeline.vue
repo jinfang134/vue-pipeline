@@ -1,17 +1,13 @@
 
 <template>
   <div class="PipelineGraph" style="position: relative; overflow: visible;">
-    <svg width="1248" height="550">
-      <!-- start node -->
-      <!-- <g transform="translate(60,55)" class="pipeline-node">
-        <circle r="7" class="pipeline-node-terminal"></circle>
-        <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
-      </g> -->
+    <svg :width="width" :height="height">
 
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
         :y2="item.y2" :xstep="xstep" :weight="item.weight" />
       <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
-        :label="item.name" :x="item.x" :y="item.y" :node="item" />
+        :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
+        @click="handleClick" />
 
     </svg>
 
@@ -20,7 +16,6 @@
 <script>
 import PipelineNode from "./PipelineNode";
 import PipelineLine from "./PipelineLine";
-import data from "./data.js";
 import { Pipeline } from "./service";
 
 export default {
@@ -29,6 +24,14 @@ export default {
     PipelineLine
   },
   props: {
+    width:{
+      type:Number,
+      default:1280,
+    },
+    height:{
+      type:Number,
+      default:200
+    },
     //第一个点的y座标
     y: {
       type: Number,
@@ -48,26 +51,33 @@ export default {
     xstart: {
       type: Number,
       default: 50
+    },
+    data: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
       nodeList: [],
       lineList: [],
-      service: new Pipeline(
-        data.nodes,
-        0,
-        this.xstart,
-        55,
-        this.xstep,
-        this.ystep
-      )
+      selectedList: [],
+      service: {}
     };
   },
-  methods: {},
+  methods: {
+    handleClick(index, node) {
+      // eslint-disable-next-line no-console
+      console.log(index, node);
+      this.selectedList.fill(false, 0, this.nodeList.length);
+      this.$set(this.selectedList, index, true);
+      this.selectedList[index] = true;
+      this.$emit("select", node);
+    }
+  },
   mounted() {
     this.service = new Pipeline(
-      data.nodes,
+      this.data,
       this.xstart,
       this.y,
       this.xstep,
@@ -77,6 +87,7 @@ export default {
     // this.service.optimize();
     this.nodeList = this.service.nodes;
     this.lineList = this.service.getLines();
+    this.selectedList.fill(false, 0, this.nodeList.length);
   }
 };
 </script>

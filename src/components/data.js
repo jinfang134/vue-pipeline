@@ -145,5 +145,9 @@ const sample2 = {
     ],
 }
 
-module.exports = hue3
+module.exports = {
+    hue3,
+    hue1,
+    sample
+}
 // export default hue1

@@ -1,8 +1,8 @@
 <template>
   <g :transform="'translate('+x+','+y+')'" :class="nodeClass">
 
-    <pipeline-node-start v-if="status=='start'"  :label="label"/>
-    <pipeline-node-end v-if="status=='end'" :label="label"/>
+    <pipeline-node-start v-if="status=='start'" :label="label" />
+    <pipeline-node-end v-if="status=='end'" :label="label" />
 
     <g v-if="status!=='start' && status!=='end'">
       <g>
@@ -53,6 +53,9 @@ export default {
     PipelineNodeEnd
   },
   props: {
+    index: {
+      type: Number
+    },
     hint: {
       type: String
     },
@@ -72,7 +75,8 @@ export default {
       type: Object
     },
     selected: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -95,11 +99,11 @@ export default {
       };
     },
     handleClick() {
-      // eslint-disable-next-line no-console
-      console.log("click", this.node);
+      // console.log("click", this.node);
       this.nodeClass = "pipeline-node-selected";
-      // this.selected = true;
-      this.$emit("click", this.node);
+      if (this.status != "start" && this.status != "end") {
+        this.$emit("click", this.index, this.node);
+      }
     },
     getTextWidth(text, font) {
       // re-use canvas object for better performance

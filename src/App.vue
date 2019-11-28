@@ -5,21 +5,34 @@
       src="./assets/logo.png"
     > -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <Pipeline />
-    <hue/>
+    <Pipeline :data="data.hue1.nodes" :height="400" @select="handleSelect" />
+    <Pipeline :data="data.hue3.nodes" :height="150" @select="handleSelect" />
+    <Pipeline :data="data.sample.nodes" :height="300" @select="handleSelect" />
+    <hue />
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import Pipeline from "./components/Pipeline.vue";
-import hue from './components/hue.vue'
+import hue from "./components/hue.vue";
+import data from "./components/data.js";
+
 export default {
   name: "app",
   components: {
-    HelloWorld,
     Pipeline,
     hue
+  },
+  data() {
+    return {
+      data: data
+    };
+  },
+  methods: {
+    handleSelect(node) {
+      alert(`you selected { ${node.name} }`);
+    }
   }
 };
 </script>
