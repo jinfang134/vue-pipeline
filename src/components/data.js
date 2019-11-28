@@ -2,7 +2,7 @@
 const hue3 = {
     nodes: [
         {
-            name: "Start", hint: '1m23s', status: 'success', next: [
+            name: "Start", hint: '1m23s', status: 'start', next: [
                 { index: 1, weight: 2 }
             ]
         },
@@ -23,7 +23,7 @@ const hue3 = {
                 { index: 4, weight: 0 },
             ]
         },
-        { name: "End ", hint: '2m23s', status: 'paused', next: [] },
+        { name: "End ", hint: '2m23s', status: 'end', next: [] },
     ],
 }
 
@@ -31,7 +31,7 @@ const hue3 = {
 const hue1 = {
     nodes: [
         {
-            name: "Start", hint: '1m23s', status: 'success', next: [
+            name: "Start", hint: '1m23s', status: 'start', next: [
                 { index: 1, weight: 2 }
             ]
         },
@@ -86,7 +86,7 @@ const hue1 = {
                 { index: 10, weight: 0 },
             ]
         },
-        { name: "End", hint: '2m23s', status: 'paused', next: [] },
+        { name: "End", hint: '2m23s', status: 'end', next: [] },
     ],
 }
 

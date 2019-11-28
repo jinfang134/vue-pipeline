@@ -5,17 +5,14 @@ const data = require('./data.js')
 
 class Pipeline {
 
-    constructor(nodes, start, startx, starty, xstep, ystep) {
+    constructor(nodes, startx, starty, xstep, ystep) {
         this.nodes = nodes;
-        this.start = start;
         this.startx = startx;
         this.starty = starty;
         this.xstep = xstep;
         this.ystep = ystep;
         this.positionList = new Set();
         this.solvedList = [];
-        // this.lineList = []
-
     }
 
     getLines() {
@@ -39,10 +36,7 @@ class Pipeline {
                 console.log(i, edge.index, node.x, node.y, child.x, child.y, edge.weight);
             }
         }
-        // eslint-disable-next-line no-console
         list.sort((a, b) => a.weight - b.weight)
-        console.log(list);
-
         return list;
     }
 
@@ -70,6 +64,27 @@ class Pipeline {
                     this.positionList.add(`${x},${y}`)
                 }
             }
+        }
+    }
+
+    /**
+     * 优化节点的位置,使其在x轴上左右居中,线的处理上还有bug
+     */
+    optimize() {
+        for (let i = 0; i < this.nodes.length; i++) {
+            let node = this.nodes[i];
+            if (node.y == this.starty) {
+                // 第一行不变
+                continue;
+            }
+            let parents = this.findParents(i);
+            let children = this.findChildren(i);
+            // eslint-disable-next-line no-console
+            console.log(parents, children);
+            let startx = Math.max(...parents.map(item => this.nodes[item].x));
+            let endx = Math.min(...children.map(item => this.nodes[item].x));
+            node.x = (startx + endx) / 2;
+            this.nodes[i] = node;
         }
     }
 

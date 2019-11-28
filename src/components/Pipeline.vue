@@ -13,10 +13,6 @@
       <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" />
 
-      <!-- <g transform="translate(900,55)" class="pipeline-node">
-        <circle r="7" class="pipeline-node-terminal"></circle>
-        <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
-      </g> -->
     </svg>
 
   </div>
@@ -33,18 +29,22 @@ export default {
     PipelineLine
   },
   props: {
+    //第一个点的y座标
     y: {
       type: Number,
       default: 55
     },
+    // x轴上相邻两个点之间的距离
     xstep: {
       type: Number,
       default: 120
     },
+    // y 轴上相邻两个点之间的距离
     ystep: {
       type: Number,
       default: 50
     },
+    // 第一个点的起始位置
     xstart: {
       type: Number,
       default: 50
@@ -52,7 +52,6 @@ export default {
   },
   data() {
     return {
-      data: data,
       nodeList: [],
       lineList: [],
       service: new Pipeline(
@@ -65,43 +64,18 @@ export default {
       )
     };
   },
-  methods: {
-    checkCircle() {},
-
-    // 优化节点的位置
-    optimize() {
-      for (let i = 0; i < this.nodeList.length; i++) {
-        let node = this.nodeList[i];
-        if (node.y == this.y) {
-          // 第一行不变
-          continue;
-        }
-        let parents = this.findParents(i);
-        let children = this.findChildren(i);
-        // eslint-disable-next-line no-console
-        console.log(parents, children);
-        let startx = Math.max(...parents.map(item => this.nodeList[item].x));
-        let endx = Math.min(...children.map(item => this.nodeList[item].x));
-        node.x = (startx + endx) / 2;
-        this.nodeList[i] = node;
-      }
-    },
-  
-  },
+  methods: {},
   mounted() {
     this.service = new Pipeline(
       data.nodes,
-      0,
       this.xstart,
-      55,
+      this.y,
       this.xstep,
       this.ystep
     );
     this.service.calculateAllPosition();
-    this.data.nodes = this.service.nodes;
+    // this.service.optimize();
     this.nodeList = this.service.nodes;
-    // console.log(this.nodeList);
-    // this.optimize();
     this.lineList = this.service.getLines();
   }
 };

@@ -1,31 +1,39 @@
 <template>
   <g :transform="'translate('+x+','+y+')'" :class="nodeClass">
-    <g>
-      <text :x="getText().x" :y="getText().y" class="pipeline-node-label">{{getText().text}}</text>
-      <title>{{label}}</title>
-    </g>
-    <g class="svgResultStatus">
-      <circle cx="0" cy="0" r="12" :class="'circle-bg '+status"></circle>
-      <g class="result-status-glyph">
-        <polygon fill="white" v-if="status=='failure'"
-          points="4.67 -3.73 3.73 -4.67 0 -0.94 -3.73 -4.67 -4.67 -3.73 -0.94 0 -4.67 3.73 -3.73 4.67 0 0.94 3.73 4.67 4.67 3.73 0.94 0">
-        </polygon>
+
+    <pipeline-node-start v-if="status=='start'"  :label="label"/>
+    <pipeline-node-end v-if="status=='end'" :label="label"/>
+
+    <g v-if="status!=='start' && status!=='end'">
+      <g>
+        <text :x="getText().x" :y="getText().y" class="pipeline-node-label">{{getText().text}}</text>
+        <title>{{label}}</title>
       </g>
-      <g class="result-status-glyph" v-if="status=='success'">
-        <polygon fill="white" points="-2.00 2.80 -4.80 0.00 -5.73 0.933 -2.00 4.67 6.00 -3.33 5.07 -4.27">
-        </polygon>
-      </g>
-      <g class="result-status-glyph" v-if="status=='paused'">
-        <polygon points="-4,-4.65 -4,4.65 -4,4.65 -1.5,4.65 -1.5,-4.65" />
-        <polygon points="4,-4.65 1.5,-4.65 1.5,-4.65 1.5,4.65 4,4.65" />
-      </g>
-      <g class="result-status-glyph" v-if="status=='unstable'">
-        <polygon points="-1 -5 1 -5 1 1 -1 1" />
-        <polygon points="-1 3 1 3 1 5 -1 5" />
+      <g class="svgResultStatus">
+        <circle cx="0" cy="0" r="12" :class="'circle-bg '+status"></circle>
+        <g class="result-status-glyph">
+          <polygon fill="white" v-if="status=='failure'"
+            points="4.67 -3.73 3.73 -4.67 0 -0.94 -3.73 -4.67 -4.67 -3.73 -0.94 0 -4.67 3.73 -3.73 4.67 0 0.94 3.73 4.67 4.67 3.73 0.94 0">
+          </polygon>
+        </g>
+        <g class="result-status-glyph" v-if="status=='success'">
+          <polygon fill="white" points="-2.00 2.80 -4.80 0.00 -5.73 0.933 -2.00 4.67 6.00 -3.33 5.07 -4.27">
+          </polygon>
+        </g>
+        <g class="result-status-glyph" v-if="status=='paused'">
+          <polygon points="-4,-4.65 -4,4.65 -4,4.65 -1.5,4.65 -1.5,-4.65" />
+          <polygon points="4,-4.65 1.5,-4.65 1.5,-4.65 1.5,4.65 4,4.65" />
+        </g>
+        <g class="result-status-glyph" v-if="status=='unstable'">
+          <polygon points="-1 -5 1 -5 1 1 -1 1" />
+          <polygon points="-1 3 1 3 1 5 -1 5" />
+        </g>
       </g>
     </g>
 
     <title>{{hint}}</title>
+
+    <!-- high light -->
     <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none" cursor="pointer" @click="handleClick">
     </circle>
     <g class="pipeline-selection-highlight" v-if="selected">
@@ -37,7 +45,13 @@
 </template>
 <script>
 import stringWidth from "string-width";
+import PipelineNodeStart from "./PipelineNodeStart";
+import PipelineNodeEnd from "./PipelineNodeEnd";
 export default {
+  components: {
+    PipelineNodeStart,
+    PipelineNodeEnd
+  },
   props: {
     hint: {
       type: String
@@ -63,7 +77,7 @@ export default {
   },
   data() {
     return {
-      nodeClass: "pipeline-node",
+      nodeClass: "pipeline-node"
     };
   },
   methods: {
@@ -71,7 +85,7 @@ export default {
       let maxLength = 14;
       let text =
         this.label.length > maxLength
-          ? this.label.substring(0, maxLength)+'...'
+          ? this.label.substring(0, maxLength) + "..."
           : this.label;
       let width = stringWidth(text);
       return {
