@@ -8,7 +8,7 @@
         <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none"></circle>
       </g> -->
 
-      <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" hint="test hint" :status="item.status"
+      <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" />
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
         :y2="item.y2" :xstep="xstep" :weight="item.weight" />
@@ -39,7 +39,7 @@ export default {
     },
     xstep: {
       type: Number,
-      default: 150
+      default: 120
     },
     ystep: {
       type: Number,
