@@ -1,6 +1,9 @@
 <template>
   <g :transform="'translate('+x+','+y+')'" :class="nodeClass">
-    <text x="-20" y="-20" class="pipeline-node-label">{{label}}</text>
+    <g>
+      <text :x="getText().x" :y="getText().y" class="pipeline-node-label">{{getText().text}}</text>
+      <title>{{label}}</title>
+    </g>
     <g class="svgResultStatus">
       <circle cx="0" cy="0" r="12" :class="'circle-bg '+status"></circle>
       <g class="result-status-glyph">
@@ -33,6 +36,7 @@
   </g>
 </template>
 <script>
+import stringWidth from "string-width";
 export default {
   props: {
     hint: {
@@ -59,10 +63,23 @@ export default {
   },
   data() {
     return {
-      nodeClass: "pipeline-node"
+      nodeClass: "pipeline-node",
     };
   },
   methods: {
+    getText() {
+      let maxLength = 14;
+      let text =
+        this.label.length > maxLength
+          ? this.label.substring(0, maxLength)+'...'
+          : this.label;
+      let width = stringWidth(text);
+      return {
+        x: -width * 2.7,
+        y: -20,
+        text
+      };
+    },
     handleClick() {
       // eslint-disable-next-line no-console
       console.log("click", this.node);

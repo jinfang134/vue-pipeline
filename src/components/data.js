@@ -23,7 +23,7 @@ const hue3 = {
                 { index: 4, weight: 2 },
             ]
         },
-        { name: "End", hint: '2m23s', status: 'paused', next: [] },
+        { name: "End ", hint: '2m23s', status: 'paused', next: [] },
     ],
 }
 
@@ -57,7 +57,7 @@ const hue1 = {
             ]
         },
         {
-            name: "Address Info", hint: '2m23s', status: 'success', next: [
+            name: "地址信息", hint: '2m23s', status: 'success', next: [
                 { index: 10, weight: 0 },
             ]
         },
@@ -145,5 +145,5 @@ const sample2 = {
     ],
 }
 
-module.exports = sample
+module.exports = hue1
 // export default hue1
