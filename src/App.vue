@@ -5,8 +5,9 @@
       src="./assets/logo.png"
     > -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <Pipeline :data="data.hue1.nodes" :height="400" @select="handleSelect" />
-    <Pipeline :data="data.hue3.nodes" :height="150" @select="handleSelect" />
+    {{msg}}
+    <Pipeline :data="data.hue1.nodes" :height="400" :xstep="140" @select="handleSelect" />
+    <Pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" />
     <Pipeline :data="data.sample.nodes" :height="300" @select="handleSelect" />
     <hue />
   </div>
@@ -26,12 +27,14 @@ export default {
   },
   data() {
     return {
+      msg: "",
       data: data
     };
   },
   methods: {
     handleSelect(node) {
-      alert(`you selected { ${node.name} }`);
+      // alert(`you selected { ${node.name} }`);
+      this.msg = `you selected { ${node.name} }`;
     }
   }
 };
