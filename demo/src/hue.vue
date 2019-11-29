@@ -8,7 +8,7 @@
         <div class="circle success" style=" margin-bottom: 20px;"></div>
       </div>
       <div class="line" ></div>
-      <img src="../assets/brace.svg" class="brace">
+      <img src="./assets/brace.svg" class="brace">
       <div class="status-list">
         <div class="info-item">
           <div class="status circle success"></div>

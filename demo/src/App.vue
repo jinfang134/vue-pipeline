@@ -15,10 +15,9 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import Pipeline from "./components/Pipeline.vue";
-import hue from "./components/hue.vue";
-import data from "./components/data.js";
+import Pipeline from "../../src/components/Pipeline.vue";
+import hue from "./hue.vue";
+import data from "./data.js";
 
 export default {
   name: "app",

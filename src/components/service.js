@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const data = require('./data.js')
+// const data = require('./data.js')
 
 
 class Pipeline {
