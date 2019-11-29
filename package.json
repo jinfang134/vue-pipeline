@@ -1,9 +1,18 @@
 {
   "name": "vue-pipeline",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
+  "author": "Zuo Jinfang <jinfang134@sina.com>",
+  "license": "MIT",
+  "description": "One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.",
+  "keywords": [
+    "vue",
+    "components",
+    "timeline"
+  ],
+  "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "test": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -13,27 +22,10 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
-    "@vue/cli-service": "^3.0.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
+    "eslint-plugin-vue": "^5.0.0"
   },
   "postcss": {
     "plugins": {
