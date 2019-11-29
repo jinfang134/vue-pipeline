@@ -18,7 +18,7 @@ module.exports = {
   overrides: [{
     "files": ["*.vue"],
     "rules": {
-      'no-console': "off",
+      // 'no-console': "off",
     }
   }]
 }
