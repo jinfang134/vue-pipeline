@@ -90,7 +90,7 @@ class Pipeline {
 
     /**
      * 为孩子节点分配一个新的坐标
-     * @param {*} fatherIndex 
+     * @param {*} fatherIndex
      */
     assignChild(fatherIndex) {
         let father = this.nodes[fatherIndex]
@@ -103,9 +103,9 @@ class Pipeline {
     }
 
     /**
-     * 判断坐标是否存在 
-     * @param {*} x 
-     * @param {*} y 
+     * 判断坐标是否存在
+     * @param {*} x
+     * @param {*} y
      */
     existPosition(x, y) {
         return this.positionList.has(`${x},${y}`)
@@ -114,7 +114,7 @@ class Pipeline {
 
     /**
      * 往前找到第一个解决的父节点
-     * @param {*} index 
+     * @param {*} index
      */
     findSolvedFather(index) {
         let list = this.findParents(index)
@@ -135,8 +135,8 @@ class Pipeline {
 
     /**
      * 查找某个顶点的父顶点
-     * @param {*} nodes 
-     * @param {*} index 
+     * @param {*} nodes
+     * @param {*} index
      */
     findParents(index) {
         let arr = [];
@@ -158,7 +158,7 @@ class Pipeline {
 
     /**
      * 查找从第{index}个节点开始的最长路径，返回经过的节点
-     * @param {*} index 
+     * @param {*} index
      */
     findLongestWay(index) {
         let children = this.findChildren(index)
@@ -180,8 +180,8 @@ class Pipeline {
 
     /**
      * 从第{index}个节点出发，深度优先搜索图
-     * @param {*} nodes 
-     * @param {*} index 
+     * @param {*} nodes
+     * @param {*} index
      */
     dfs(index) {
         const queue = [];
@@ -217,9 +217,9 @@ class Pipeline {
 // // console.log(pipeline.findLongestWay(0))
 // console.log(JSON.stringify(pipeline.nodes))
 
-// module.exports={
-//     Pipeline
-// }
-export {
+module.exports={
     Pipeline
 }
+// export {
+//     Pipeline
+// }
