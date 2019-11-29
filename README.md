@@ -1,4 +1,11 @@
-# vue-hello
+# vue-pipeline-demo
+One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.
+
+![sample](./resources/sample.png)
+
+
+
+
 
 ## Project setup
 ```
