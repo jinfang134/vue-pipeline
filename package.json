@@ -12,20 +12,30 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "test": "ava test/*.test.js --verbose",
+    "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
+  },
+  "ava": {
+    "require": [
+      "@babel/polyfill"
+    ]
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "string-width": "^4.2.0",
-    "vue": "^2.6.10"
+    "string-width": "^4.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "^3.0.1",
+    "ava": "^2.4.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0"
+    "eslint-plugin-vue": "^6.0.1",
+    "husky": "^3.1.0"
   },
   "postcss": {
     "plugins": {
