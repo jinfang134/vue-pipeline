@@ -209,17 +209,6 @@ class Pipeline {
 
 }
 
-// let pipeline = new Pipeline(data.nodes, 0, 50, 55, 120, 50)
-// console.log(pipeline.dfs(0))
-// let list=pipeline.findParents(3)
-// console.log(JSON.stringify(list))
-// // pipeline.calculateAllPosition()
-// // console.log(pipeline.findLongestWay(0))
-// console.log(JSON.stringify(pipeline.nodes))
-
-module.exports={
+export {
     Pipeline
 }
-// export {
-//     Pipeline
-// }

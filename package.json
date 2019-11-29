@@ -22,17 +22,25 @@
   },
   "ava": {
     "require": [
-      "@babel/polyfill"
-    ]
+      "@babel/register"
+    ],
+    "babel": {
+      "testOptions": {
+        "babelrc": false,
+        "configFile": false
+      }
+    }
   },
   "dependencies": {
-    "core-js": "^2.6.5",
     "string-width": "^4.2.0"
   },
   "devDependencies": {
+    "@babel/register": "^7.7.4",
+    "@vue/babel-preset-app": "^4.1.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "ava": "^2.4.0",
     "babel-eslint": "^10.0.1",
+    "core-js": "^3.4.5",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^6.0.1",
     "husky": "^3.1.0"
