@@ -67,7 +67,6 @@ export default {
   },
   methods: {
     handleClick(index, node) {
-      // eslint-disable-next-line no-console
       console.log(index, node);
       this.selectedList.fill(false, 0, this.nodeList.length);
       this.$set(this.selectedList, index, true);
