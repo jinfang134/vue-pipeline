@@ -4,12 +4,12 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     {{msg}}
     <div>
-      <vue-pipeline :data="data.hue1.nodes" :width="800" :height="700" :ystep="80" :xstep="140"
+      <vue-pipeline :data="data.hue1.nodes" :width="800" :height="400" :ystep="50" :xstep="140"
         @select="handleSelect" />
     </div>
-    <!-- <div><vue-pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" /></div>
-    <div><vue-pipeline :data="data.sample.nodes" :height="400" @select="handleSelect" /></div>
-    <div><vue-pipeline :data="data.sample3.nodes" :height="400" @select="handleSelect" /></div> -->
+    <div><vue-pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" /></div>
+    <div><vue-pipeline :data="data.sample.nodes" :height="400" lineStyle="bessel" @select="handleSelect" /></div>
+    <div><vue-pipeline :data="data.sample3.nodes" :height="400" lineStyle="line" @select="handleSelect" /></div>
     <hue />
   </div>
 </template>

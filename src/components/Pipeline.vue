@@ -1,15 +1,15 @@
 
 <template>
   <!-- <div class="PipelineGraph" style="position: relative; overflow: visible;"> -->
-    <svg class="pipeline" :width="width" :height="height" >
+  <svg class="pipeline" :width="width" :height="height">
 
-      <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
-        :y2="item.y2" :xstep="xstep" :weight="item.weight" />
-      <pipeline-node  v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
-        :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
-        @click="handleClick" />
+    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :path="item.path" :weight="item.weight"
+      :lineStyle="lineStyle" />
+    <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
+      :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
+      @click="handleClick" />
 
-    </svg>
+  </svg>
 
   <!-- </div> -->
 </template>
@@ -24,13 +24,13 @@ export default {
     PipelineLine
   },
   props: {
-    width:{
-      type:Number,
-      default:1280,
+    width: {
+      type: Number,
+      default: 1280
     },
-    height:{
-      type:Number,
-      default:200
+    height: {
+      type: Number,
+      default: 200
     },
     //第一个点的y座标
     y: {
@@ -55,6 +55,10 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    lineStyle: {
+      type: String,
+      default: "default"
     }
   },
   data() {
@@ -80,7 +84,8 @@ export default {
       this.xstart,
       this.y,
       this.xstep,
-      this.ystep
+      this.ystep,
+      this.lineStyle
     );
     this.service.calculateAllPosition();
     // this.service.optimize();
@@ -92,7 +97,7 @@ export default {
 </script>
 
 <style >
-.pipeline{
+.pipeline {
   /* transform: rotate(90deg) */
 }
 /* .pipeline .pipeline-node{
