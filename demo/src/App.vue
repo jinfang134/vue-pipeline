@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <img
-      alt="Vue logo"
-      src="./assets/logo.png"
-    >
+    <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     {{msg}}
-    <vue-pipeline :data="data.hue1.nodes" :height="400" :xstep="140" @select="handleSelect" />
-    <vue-pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" />
-    <vue-pipeline :data="data.sample.nodes" :height="400" @select="handleSelect" />
-    <vue-pipeline :data="data.sample3.nodes" :height="400" @select="handleSelect" />
+    <div>
+      <vue-pipeline :data="data.hue1.nodes" :width="800" :height="700" :ystep="80" :xstep="140"
+        @select="handleSelect" />
+    </div>
+    <!-- <div><vue-pipeline :data="data.hue3.nodes" :height="150" :xstep="160" @select="handleSelect" /></div>
+    <div><vue-pipeline :data="data.sample.nodes" :height="400" @select="handleSelect" /></div>
+    <div><vue-pipeline :data="data.sample3.nodes" :height="400" @select="handleSelect" /></div> -->
     <hue />
   </div>
 </template>
@@ -39,7 +39,6 @@ export default {
 </script>
 
 <style>
-
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

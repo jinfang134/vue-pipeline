@@ -4,7 +4,6 @@
     <line v-if="y1==y2&&x2-x1==xstep" :stroke="color()" stroke-width="3.5" :x1="x1+10" :y1="y1" :x2="x2-10" :y2="y2">
     </line>
     <path v-if="y1==y2&&x2-x1>xstep" stroke-width="3.5" :stroke="color()" :d="getPath2()" fill="none"> </path>
-
   </g>
 </template>
 
@@ -105,7 +104,7 @@ export default {
             ${lb} \
             l ${firstCorner - 20} 0
         `;
-        return path2;
+        return d;
       } else {
         // 左下到右上
          let path=`M ${this.x1},${this.y1}\
@@ -127,7 +126,7 @@ export default {
             l ${20} 0
         `;
         // console.log(d)
-        return path2;
+        return d;
       }
     }
   }

@@ -1,17 +1,17 @@
 
 <template>
-  <div class="PipelineGraph" style="position: relative; overflow: visible;">
-    <svg :width="width" :height="height">
+  <!-- <div class="PipelineGraph" style="position: relative; overflow: visible;"> -->
+    <svg class="pipeline" :width="width" :height="height" >
 
       <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :x1="item.x1" :y1="item.y1" :x2="item.x2"
         :y2="item.y2" :xstep="xstep" :weight="item.weight" />
-      <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
+      <pipeline-node  v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
         :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
         @click="handleClick" />
 
     </svg>
 
-  </div>
+  <!-- </div> -->
 </template>
 <script>
 import PipelineNode from "./PipelineNode";
@@ -92,6 +92,12 @@ export default {
 </script>
 
 <style >
+.pipeline{
+  /* transform: rotate(90deg) */
+}
+/* .pipeline .pipeline-node{
+  transform: rotate(90deg)
+} */
 .pipeline-node-terminal {
   fill: #949393;
 }

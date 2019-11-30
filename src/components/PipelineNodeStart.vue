@@ -1,7 +1,7 @@
 <template>
   <g class="pipeline-node-start">
-    <ellipse ry="10" rx="20" id="svg_1" stroke-width="1.5" />
-    <text id="svg_2" x="-12" y="3" class="pipeline-node-start__text">{{label}}</text>
+    <rect rx="13" id="svg_1" height="26" width="40" y="-13" x="-20" stroke-width="1.5" />
+    <text id="svg_2" x="-13" y="3" class="pipeline-node-start__text">{{label}}</text>
   </g>
 </template>
 <script>
@@ -24,5 +24,6 @@ export default {
   stroke: none;
   fill: #fff;
   font-size: 12px;
+  font-weight: bold;
 }
 </style>
