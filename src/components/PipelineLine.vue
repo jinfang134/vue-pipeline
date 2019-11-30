@@ -78,6 +78,9 @@ export default {
       return d;
     },
     getPath() {
+
+
+
       const lb = "c 0 12 12 12 12 12";
       const rb = "c 12 0 12 -12 12 -12";
       const rt = "c 12 0 12 12 12 12";
@@ -85,6 +88,15 @@ export default {
       let midy = Math.abs(this.y2 - this.y1);
       if (this.y2 > this.y1) {
         // 左上到右下
+
+        let path=`M ${this.x1+12},${this.y1}\
+        C ${this.x2},${this.y1}\
+        ${this.x1+50},${this.y2}\
+        ${this.x2},${this.y2}
+        `
+
+        let path2=`M ${this.x1+12},${this.y1} L${this.x1},${this.y1} ${this.x2},${this.y2}`
+
         let firstCorner = this.x2 - this.x1 - 50;
         const d = `M ${this.x1 + 10} ${this.y1}\
             l ${20} 0\
@@ -93,9 +105,19 @@ export default {
             ${lb} \
             l ${firstCorner - 20} 0
         `;
-        return d;
+        return path2;
       } else {
         // 左下到右上
+         let path=`M ${this.x1},${this.y1}\
+        C ${this.x2-50},${this.y1}\
+        ${this.x1},${this.y2}\
+        ${this.x2-12},${this.y2}
+        `
+
+
+        let path2=`M ${this.x1+12},${this.y1} L${this.x1},${this.y1} ${this.x2},${this.y2}`
+
+
         let lastCorner = this.x2 - this.x1 - 50;
         const d = `M ${this.x1 + 14} ${this.y1}\
             l ${lastCorner - 20} 0\
@@ -105,7 +127,7 @@ export default {
             l ${20} 0
         `;
         // console.log(d)
-        return d;
+        return path2;
       }
     }
   }
