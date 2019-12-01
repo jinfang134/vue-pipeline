@@ -2,8 +2,14 @@
 <template>
   <!-- <div class="PipelineGraph" style="position: relative; overflow: visible;"> -->
   <svg class="pipeline" :width="width" :height="height">
+    <defs>
+      <marker :id="'idArrow'+i" v-for="i in [0,1,2,3,4,5]" :key="'arrow'+i" :class="'weight'+i" viewBox="0 0 20 20"
+        refX="13" refY="10" markerUnits="strokeWidth" markerWidth="3" markerHeight="10" orient="auto">
+        <path d="M 0 0 L 20 10 L 0 20 z" />
+      </marker>
+    </defs>
 
-    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :path="item.path" :weight="item.weight"
+    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :showArrow="showArrow" :path="item.path" :weight="item.weight"
       :lineStyle="lineStyle" />
     <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
       :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
@@ -59,6 +65,10 @@ export default {
     lineStyle: {
       type: String,
       default: "default"
+    },
+    showArrow: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -68,6 +78,28 @@ export default {
       selectedList: [],
       service: {}
     };
+  },
+  computed: {
+    dataLength() {
+      return this.data.length;
+    }
+  },
+  watch: {
+    dataLength() {
+      this.service = new Pipeline(
+        this.data,
+        this.xstart,
+        this.y,
+        this.xstep,
+        this.ystep,
+        this.lineStyle
+      );
+      this.service.calculateAllPosition();
+      // this.service.optimize();
+      this.nodeList = this.service.nodes;
+      this.lineList = this.service.getLines();
+      this.selectedList.fill(false, 0, this.nodeList.length);
+    }
   },
   methods: {
     handleClick(index, node) {
@@ -92,6 +124,20 @@ export default {
     this.nodeList = this.service.nodes;
     this.lineList = this.service.getLines();
     this.selectedList.fill(false, 0, this.nodeList.length);
+  },
+  beforeUpdate() {
+    this.service = new Pipeline(
+      this.data,
+      this.xstart,
+      this.y,
+      this.xstep,
+      this.ystep,
+      this.lineStyle
+    );
+    this.service.calculateAllPosition();
+    // this.service.optimize();
+    this.nodeList = this.service.nodes;
+    this.lineList = this.service.getLines();
   }
 };
 </script>
@@ -100,6 +146,22 @@ export default {
 .pipeline {
   /* transform: rotate(90deg) */
 }
+
+.pipeline .weight0 {
+  fill: #ddd;
+  stroke: #ddd;
+}
+
+.pipeline .weight1 {
+  fill: #949393;
+  stroke: #949393;
+}
+
+.pipeline .weight2 {
+  fill: #8cc04f;
+  stroke: #8cc04f;
+}
+
 /* .pipeline .pipeline-node{
   transform: rotate(90deg)
 } */

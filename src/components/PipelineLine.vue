@@ -1,6 +1,6 @@
 <template>
-  <g>
-    <path stroke-width="3.5" :stroke="color()" :d="this.path" fill="none"> </path>
+  <g :class="'pipeline-line '+'weight'+weight ">
+    <path stroke-width="3.5" :d="this.path" fill="none" :marker-end="getMarkerEnd()"> </path>
   </g>
 </template>
 
@@ -13,6 +13,10 @@ export default {
     weight: {
       type: Number,
       default: 0
+    },
+    showArrow: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -22,6 +26,11 @@ export default {
   },
   computed: {},
   methods: {
+    getMarkerEnd() {
+      if (this.showArrow) {
+        return `url(#idArrow${this.weight})`;
+      }
+    },
     color() {
       switch (this.weight) {
         case 0:
