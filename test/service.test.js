@@ -40,3 +40,35 @@ test('DFS', async t => {
   let list = service.dfs(0)
   t.deepEqual(list.length, sample.nodes.length, 'DFS is wrong!');
 });
+
+
+test('topologicalSorting', t=>{
+  const testdata=[
+      { name: "test0", hint: '1m23s', status: 'success', next: [{ index: 1, weight: 2 }] },
+      {
+        name: "test1 long", hint: '1m23s', status: 'success', next: [
+          { index: 2, weight: 2 }, { index: 3, weight: 2 }, { index: 5, weight: 2 }
+        ]
+      },
+      { name: "test2 hello world", hint: '2m23s', status: 'unstable', next: [{ index: 3 },{index:4}] },
+      { name: "test3", hint: '2m23s', status: 'success', next: [{ index: 4 }] },
+      { name: "test4 ha", hint: '2m23s', status: 'failure', next: [] },//4
+      { name: "test5", hint: '2m23s', status: 'failure', next: [{ index: 4 }] },
+    ]
+
+  let service = new Pipeline(testdata, 50, 55, 120, 60)
+  let list = service.topologicalSorting()
+  t.deepEqual(list,[0,1,2,3,5,4])
+})
+
+test('hasCircle', t=>{
+  const test2=[
+    { name: "test0", hint: '1m23s', status: 'success', next: [{ index: 1, weight: 2 }] },
+    { name: "test0", hint: '1m23s', status: 'success', next: [{ index: 2, weight: 2 }] },
+    { name: "test0", hint: '1m23s', status: 'success', next: [{ index: 1, weight: 2 }] },
+  ]
+
+  let service = new Pipeline(test2, 50, 55, 120, 60)
+  let result = service.hasCircle()
+  t.deepEqual(result,true, 'this graph has circle.')
+})

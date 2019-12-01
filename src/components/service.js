@@ -110,7 +110,7 @@ class Pipeline {
         let path = `M ${start.x+12},${start.y}\
                 C ${end.x},${start.y}\
                 ${start.x+50},${end.y}\
-                ${end.x},${end.y}
+                ${end.x-15},${end.y}
                 `
         return path;
       }
@@ -146,7 +146,7 @@ class Pipeline {
    * @param {*} end
    */
   getStraightLinePath(start, end) {
-    return `M ${start.x+12},${start.y} L${start.x+12},${start.y} ${end.x},${end.y}`
+    return `M ${start.x+12},${start.y} L${start.x+12},${start.y} ${end.x-15},${end.y}`
   }
 
   /**
@@ -195,6 +195,35 @@ class Pipeline {
       node.x = (startx + endx) / 2;
       this.nodes[i] = node;
     }
+  }
+
+  /**
+   * 图的拓扑排序
+   */
+  topologicalSorting() {
+    let visited = [];
+    let result = []
+    for (let i = 0; i < this.nodes.length; i++) {
+      if (visited[i] == true) {
+        continue;
+      }
+      let list = this.findParents(i)
+      if (list.length == 0 || list.every(it => visited[it] == true)) {
+        visited[i] = true;
+        result.push(i)
+        i = 0;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * 判断是否有环
+   * 如果有环，返回true
+   */
+  hasCircle() {
+    let list = this.topologicalSorting()
+    return list.length < this.nodes.length;
   }
 
   /**
