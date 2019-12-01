@@ -17,8 +17,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm lint && npm test",
-      "pre-push": "npm lint"
+      "pre-commit": "yarn lint && yarn test",
+      "pre-push": "yarn lint"
     }
   },
   "ava": {

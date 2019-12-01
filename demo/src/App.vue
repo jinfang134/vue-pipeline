@@ -2,10 +2,11 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
+    <h2>Vue Pipeline</h2>
     {{msg}}
     <div class="setting">
 
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="120px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="Width">
@@ -46,12 +47,19 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Samples">
-          <el-radio-group v-model="form.data">
+          <el-radio-group v-model="form.data" @input="()=>this.data=this.getData()">
             <el-radio :label="0">Sample 1 </el-radio>
             <el-radio :label="1">Sample 2</el-radio>
             <el-radio :label="2">Sample 3</el-radio>
             <el-radio :label="3">Sample 4</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="Add Line">
+          <div class="addline">
+            <el-input v-model="form.from" hint="from"></el-input>
+            <el-input v-model="form.to"></el-input>
+            <el-button type="primary" @click="addLine">添加</el-button>
+          </div>
         </el-form-item>
 
         <!-- <el-form-item>
@@ -63,7 +71,7 @@
 
     <el-tabs v-model="tab" type="card">
       <el-tab-pane label="Pipeline" name="pipeline">
-        <vue-pipeline :data="getData()" :width="form.width" :showArrow="form.showArrow" :height="form.height"
+        <vue-pipeline :data="data" :width="form.width" :showArrow="form.showArrow" :height="form.height"
           :ystep="form.ystep" :xstep="form.xstep" :lineStyle="form.lineStyle" @select="handleSelect" />
       </el-tab-pane>
       <el-tab-pane label="Data" name="data">
@@ -90,6 +98,7 @@ export default {
   data() {
     return {
       tab: "pipeline",
+      data: hue1.nodes,
       form: {
         height: 800,
         width: 800,
@@ -98,12 +107,14 @@ export default {
         data: 0,
         showArrow: true,
         lineStyle: "default",
-        desc: ""
+        from: 0,
+        to: 0
       },
       msg: ""
       // data: data
     };
   },
+  watch: {},
   methods: {
     getData() {
       console.log(this.form.data);
@@ -118,10 +129,21 @@ export default {
           return sample3.nodes;
       }
     },
+    addLine() {
+      let list = this.data[this.form.from].next;
+      if (list.some(it => it.index == this.form.to)) {
+        alert("this line is exist");
+      }
+      list.push({ index: this.form.to });
+      this.data[this.form.from].next = list;
+    },
     handleSelect(node) {
       // alert(`you selected { ${node.name} }`);
       this.msg = `you selected { ${node.name} }`;
     }
+  },
+  mounted() {
+    this.data = hue1.nodes;
   }
 };
 </script>
@@ -140,5 +162,13 @@ export default {
 }
 .setting {
   margin: 30px;
+  width: 800px;
+}
+.addline {
+  display: flex;
+  width: 300px;
+}
+.addline > *:not(:first-child) {
+  margin-left: 5px;
 }
 </style>
