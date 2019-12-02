@@ -1,6 +1,5 @@
 
 <template>
-  <!-- <div class="PipelineGraph" style="position: relative; overflow: visible;"> -->
   <svg class="pipeline" :width="width" :height="height">
     <defs>
       <marker :id="'idArrow'+i" v-for="i in [0,1,2,3,4,5]" :key="'arrow'+i" :class="'weight'+i" viewBox="0 0 20 20"
@@ -9,15 +8,12 @@
       </marker>
     </defs>
 
-    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :showArrow="showArrow" :path="item.path" :weight="item.weight"
-      :lineStyle="lineStyle" />
+    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :showArrow="showArrow" :path="item.path"
+      :weight="item.weight" :lineStyle="lineStyle" />
     <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
       :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
-      @click="handleClick" />
-
+      @click="handleClick"  />
   </svg>
-
-  <!-- </div> -->
 </template>
 <script>
 import PipelineNode from "./PipelineNode";
@@ -86,6 +82,17 @@ export default {
   },
   watch: {
     dataLength() {
+      this.render();
+    }
+  },
+  methods: {
+    handleClick(index, node) {
+      this.selectedList.fill(false, 0, this.nodeList.length);
+      this.$set(this.selectedList, index, true);
+      this.selectedList[index] = true;
+      this.$emit("select", node);
+    },
+    render() {
       this.service = new Pipeline(
         this.data,
         this.xstart,
@@ -94,51 +101,20 @@ export default {
         this.ystep,
         this.lineStyle
       );
+      if(this.service.hasCircle()){
+        throw new Error('Error data, The graph should not contain any circle!')
+      }
       this.service.calculateAllPosition();
       // this.service.optimize();
       this.nodeList = this.service.nodes;
       this.lineList = this.service.getLines();
-      this.selectedList.fill(false, 0, this.nodeList.length);
-    }
-  },
-  methods: {
-    handleClick(index, node) {
-      console.log(index, node);
-      this.selectedList.fill(false, 0, this.nodeList.length);
-      this.$set(this.selectedList, index, true);
-      this.selectedList[index] = true;
-      this.$emit("select", node);
     }
   },
   mounted() {
-    this.service = new Pipeline(
-      this.data,
-      this.xstart,
-      this.y,
-      this.xstep,
-      this.ystep,
-      this.lineStyle
-    );
-    this.service.calculateAllPosition();
-    // this.service.optimize();
-    this.nodeList = this.service.nodes;
-    this.lineList = this.service.getLines();
+    this.render();
     this.selectedList.fill(false, 0, this.nodeList.length);
   },
-  beforeUpdate() {
-    this.service = new Pipeline(
-      this.data,
-      this.xstart,
-      this.y,
-      this.xstep,
-      this.ystep,
-      this.lineStyle
-    );
-    this.service.calculateAllPosition();
-    // this.service.optimize();
-    this.nodeList = this.service.nodes;
-    this.lineList = this.service.getLines();
-  }
+
 };
 </script>
 
