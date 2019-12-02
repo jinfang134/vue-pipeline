@@ -22,6 +22,12 @@ class Pipeline {
     this.positionList = new Set();
     this.solvedList = [];
     this.lineStyle = lineStyle
+    this.sortedList = this.topologicalSorting();
+    this.matrix = [] //存放各个顶点的相对坐标
+    for (let i = 0; i < nodes.length; i++) {
+      this.matrix[i] = []
+    }
+    console.log(startx,starty,xstep,ystep)
   }
 
   getLines() {
@@ -31,7 +37,6 @@ class Pipeline {
       if (!node.next) {
         continue;
       }
-      console.log(node.name, JSON.stringify(node.next))
       for (let j = 0; j < node.next.length; j++) {
         let edge = node.next[j];
         let child = this.nodes[edge.index];
@@ -64,24 +69,20 @@ class Pipeline {
         let control1 = this.xstep / 2 + 40;
         let control2 = this.xstep / 2 + 30;
 
-        let d = `M ${start.x+10} ${start.y} \
+        let d = `M ${start.x + 10} ${start.y} \
             l 20 0\
            C ${start.x + control1},${start.y} \
-            ${start.x + control2},${start.y+30} \
-             ${start.x + this.xstep},${start.y+30}`;
+            ${start.x + control2},${start.y + 30} \
+             ${start.x + this.xstep},${start.y + 30}`;
         if (number > 2) {
           d += `l ${this.xstep * (number - 2)} 0`;
         }
 
-        d += `C ${end.x - control2},${start.y+30} \
+        d += `C ${end.x - control2},${start.y + 30} \
         ${end.x - control1},${start.y} \
         ${end.x - 10 - 20},${end.y} \
         l 20 0`;
 
-        // const d = `M ${start.x + 10} ${start.y}\
-        //       S ${this.x1 + 120} ${start.y + 100} ${end.x - 10} ${end.y}
-        //   `;
-        console.log(d);
         return d;
       }
       return this.getStraightLinePath(start, end);
@@ -107,10 +108,10 @@ class Pipeline {
         return d;
       }
       if (this.lineStyle == 'bessel') {
-        let path = `M ${start.x+12},${start.y}\
+        let path = `M ${start.x + 12},${start.y}\
                 C ${end.x},${start.y}\
-                ${start.x+50},${end.y}\
-                ${end.x-15},${end.y}
+                ${start.x + 50},${end.y}\
+                ${end.x - 15},${end.y}
                 `
         return path;
       }
@@ -118,9 +119,9 @@ class Pipeline {
       // 左下到右上
       if (this.lineStyle === 'bessel') {
         let path = `M ${start.x},${start.y}\
-        C ${end.x-50},${start.y}\
+        C ${end.x - 50},${start.y}\
         ${start.x},${end.y}\
-        ${end.x-12},${end.y}
+        ${end.x - 12},${end.y}
         `
         return path;
       }
@@ -146,7 +147,18 @@ class Pipeline {
    * @param {*} end
    */
   getStraightLinePath(start, end) {
-    return `M ${start.x+12},${start.y} L${start.x+12},${start.y} ${end.x-15},${end.y}`
+    return `M ${start.x + 12},${start.y} L${start.x + 12},${start.y} ${end.x - 15},${end.y}`
+  }
+
+  getPositionInMatrix(index) {
+    for (let i = 0; i < this.matrix.length; i++) {
+      for (let j = 0; j < this.matrix[i].length; j++) {
+        if (this.matrix[i][j] == index) {
+          return [i,j]
+        }
+      }
+    }
+    return [];
   }
 
   /**
@@ -156,21 +168,36 @@ class Pipeline {
     // 查找最长的路径，并为其分配坐标
     let list = this.findLongestWay(0)
     list.forEach((it, index) => {
-      this.nodes[it].x = this.startx + this.xstep * index
-      this.nodes[it].y = this.starty
-      this.positionList.add(`${this.nodes[it].x},${this.nodes[it].y}`)
+      this.matrix[0][index] = it
+      this.solvedList[it] = true;
     })
 
-    for (let i = 0; i < this.nodes.length; i++) {
-      if (!this.nodes[i].x) {
-        //往前找到第一个解决的父节点
-        let fatherIndex = this.findSolvedFather(i)
-        if (fatherIndex != null) {
+    for (let i = 0; i < this.sortedList.length; i++) {
+      let sindex = this.sortedList[i]
+      if (!this.solvedList[sindex]) {
+        let fatherIndex = this.findSolvedFather(sindex)
+        let [y,x] = this.getPositionInMatrix(fatherIndex) //找到父节点在矩阵中的坐标
+        let list = this.findLongestWay(sindex);
+        let startx = x + 1;
 
-          let [x, y] = this.assignChild(fatherIndex)
-          this.nodes[i].x = x
-          this.nodes[i].y = y
-          this.positionList.add(`${x},${y}`)
+        let starty = y
+        while (this.matrix[starty][startx]) {
+          starty++;
+        }
+        // starty-=1;
+        list.forEach(it => {
+          this.matrix[starty][startx++] = it;
+          this.solvedList[it] = true;
+        })
+      }
+    }
+
+    for (let i = 0; i < this.matrix.length; i++) {
+      for (let j = 0; j < this.matrix.length; j++) {
+        let index = this.matrix[i][j]
+        if (index!=undefined) {
+          this.nodes[index].x = this.startx + this.xstep * j;
+          this.nodes[index].y = this.starty + this.ystep * i;
         }
       }
     }
@@ -226,29 +253,6 @@ class Pipeline {
     return list.length < this.nodes.length;
   }
 
-  /**
-   * 为孩子节点分配一个新的坐标
-   * @param {*} fatherIndex
-   */
-  assignChild(fatherIndex) {
-    let father = this.nodes[fatherIndex]
-    let x = father.x + this.xstep;
-    let y = father.y;
-    while (this.existPosition(x, y)) {
-      y += this.ystep;
-    }
-    return [x, y]
-  }
-
-  /**
-   * 判断坐标是否存在
-   * @param {*} x
-   * @param {*} y
-   */
-  existPosition(x, y) {
-    return this.positionList.has(`${x},${y}`)
-  }
-
 
   /**
    * 往前找到第一个解决的父节点
@@ -260,7 +264,7 @@ class Pipeline {
       return null;
     }
     for (let i = 0; i < list.length; i++) {
-      if (this.nodes[list[i]].x) {
+      if (this.solvedList[list[i]]) {
         return list[i]
       } else {
         return this.findSolvedFather(list[i])
@@ -295,7 +299,7 @@ class Pipeline {
 
 
   /**
-   * 查找从第{index}个节点开始的最长路径，返回经过的节点
+   * 查找从第{index}个节点开始的最长路径，返回经过的未被计算位置的节点,
    * @param {*} index
    */
   findLongestWay(index) {
@@ -306,6 +310,9 @@ class Pipeline {
     let arr = [],
       maxLength = 0;
     for (let i = 0; i < children.length; i++) {
+      if (this.solvedList[children[i]]) {
+        continue;
+      }
       let list = this.findLongestWay(children[i])
       if (list.length > maxLength) {
         maxLength = list.length;
