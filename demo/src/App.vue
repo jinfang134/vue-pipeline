@@ -6,7 +6,7 @@
 
     <div class="setting">
 
-      <el-form ref="form" :model="form" label-width="120px" @validate="fresh">
+      <el-form ref="form" :model="form" label-width="100px" @validate="fresh">
         <el-row>
           <el-col :span="12">
             <el-form-item label="Width">
@@ -75,7 +75,7 @@
           :ystep="parseInt(form.ystep)" :xstep="parseInt(form.xstep)" :lineStyle="form.lineStyle" @select="handleSelect" />
       </el-tab-pane>
       <el-tab-pane label="Data" name="data">
-        {{JSON.stringify(this.getData())}}
+        {{JSON.stringify(this.data)}}
       </el-tab-pane>
 
     </el-tabs>
@@ -161,6 +161,7 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 30px 30px;
   /* text-align: center; */
   color: #2c3e50;
   /* margin-top: 60px; */
