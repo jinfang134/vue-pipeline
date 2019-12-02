@@ -1,15 +1,5 @@
 # vue-pipeline
 
-# [Bootstrap Table](https://bootstrap-table.com)
-
-[![Build Status](https://travis-ci.org/wenzhixin/bootstrap-table.svg)](https://travis-ci.org/wenzhixin/bootstrap-table)
-[![GitHub version](https://badge.fury.io/gh/wenzhixin%2Fbootstrap-table.svg)](http://badge.fury.io/gh/wenzhixin%2Fbootstrap-table)
-[![Bower version](https://badge.fury.io/bo/bootstrap-table.svg)](http://badge.fury.io/bo/bootstrap-table)
-[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/bootstrap-table/badge?style=rounded)](https://www.jsdelivr.com/package/npm/bootstrap-table)
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZDHP676FQDUT6)
-[![Backers on Open Collective](https://opencollective.com/bootstrap-table/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/bootstrap-table/sponsors/badge.svg)](#sponsors)
-
 One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.
 
 [中文](/doc/cn.md)
@@ -78,7 +68,7 @@ Vue.use(VuePipeline)
 | ------ | ------ | --------------------------- |
 | @click | node   | Occurs when node is clicked |
 
-## Function 
+## Function
 
 | Name   | params | Description                  |
 | ------ | ------ | ---------------------------- |
