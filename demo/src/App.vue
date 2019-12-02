@@ -3,10 +3,10 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <h2>Vue Pipeline</h2>
-    {{msg}}
+
     <div class="setting">
 
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="form" label-width="120px" @validate="fresh">
         <el-row>
           <el-col :span="12">
             <el-form-item label="Width">
@@ -23,7 +23,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="X step">
-              <el-input v-model="form.xstep"></el-input>
+              <el-input v-model="form.xstep" type="number"></el-input>
             </el-form-item>
 
           </el-col>
@@ -40,39 +40,39 @@
         </el-form-item>
 
         <el-form-item label="Line Style">
-          <el-radio-group v-model="form.lineStyle">
+          <el-radio-group v-model="form.lineStyle" @change="fresh">
             <el-radio label="default">Default</el-radio>
             <el-radio label="bessel">Bessel</el-radio>
             <el-radio label="line">line</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Samples">
-          <el-radio-group v-model="form.data" @input="()=>this.data=this.getData()">
+          <el-radio-group v-model="form.data" @input="fresh">
             <el-radio :label="0">Sample 1 </el-radio>
             <el-radio :label="1">Sample 2</el-radio>
             <el-radio :label="2">Sample 3</el-radio>
             <el-radio :label="3">Sample 4</el-radio>
+            <el-radio :label="4">Sample 5</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Add Line">
           <div class="addline">
             <el-input v-model="form.from" hint="from"></el-input>
             <el-input v-model="form.to"></el-input>
-            <el-button type="primary" @click="addLine">添加</el-button>
+            <el-button type="primary" @click="addLine">Add</el-button>
           </div>
         </el-form-item>
+       <el-form-item label="">
+          <el-button type="primary" @click="fresh">Update</el-button>
+       </el-form-item>
 
-        <!-- <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
-      </el-form-item> -->
       </el-form>
     </div>
-
+    <div class="msg"> You selected :{{msg}}</div>
     <el-tabs v-model="tab" type="card">
       <el-tab-pane label="Pipeline" name="pipeline">
-        <vue-pipeline :data="data" :width="form.width" :showArrow="form.showArrow" :height="form.height"
-          :ystep="form.ystep" :xstep="form.xstep" :lineStyle="form.lineStyle" @select="handleSelect" />
+        <vue-pipeline ref="pipeline" :data="data" :width="form.width" :showArrow="form.showArrow" :height="parseInt(form.height)"
+          :ystep="parseInt(form.ystep)" :xstep="parseInt(form.xstep)" :lineStyle="form.lineStyle" @select="handleSelect" />
       </el-tab-pane>
       <el-tab-pane label="Data" name="data">
         {{JSON.stringify(this.getData())}}
@@ -88,12 +88,12 @@
 
 <script>
 import hue from "./hue.vue";
-import { hue1, hue3, sample, sample3 } from "./data.js";
+import { hue1, hue3, sample, sample3, sample2 } from "./data.js";
 
 export default {
   name: "app",
   components: {
-    hue
+    // hue
   },
   data() {
     return {
@@ -101,7 +101,7 @@ export default {
       data: hue1.nodes,
       form: {
         height: 800,
-        width: 800,
+        width: 1200,
         xstep: 120,
         ystep: 70,
         data: 0,
@@ -116,30 +116,38 @@ export default {
   },
   watch: {},
   methods: {
-    getData() {
-      console.log(this.form.data);
+    getData() {},
+    fresh() {
       switch (this.form.data) {
         case 0:
-          return hue1.nodes;
+          this.data = hue1.nodes;
+          break;
         case 1:
-          return hue3.nodes;
+          this.data = hue3.nodes;
+          break;
         case 2:
-          return sample.nodes;
+          this.data = sample.nodes;
+          break;
         case 3:
-          return sample3.nodes;
+          this.data = sample3.nodes;
+          break;
+        case 4:
+          this.data = sample2.nodes;
+          break;
       }
+       this.$refs["pipeline"].render();
     },
     addLine() {
-      let list = this.data[this.form.from].next;
+      let list = this.data[this.form.from].next || [];
       if (list.some(it => it.index == this.form.to)) {
         alert("this line is exist");
       }
       list.push({ index: this.form.to });
       this.data[this.form.from].next = list;
+      this.$refs["pipeline"].render();
     },
     handleSelect(node) {
-      // alert(`you selected { ${node.name} }`);
-      this.msg = `you selected { ${node.name} }`;
+      this.msg = `{ ${node.name} }`;
     }
   },
   mounted() {
@@ -170,5 +178,9 @@ export default {
 }
 .addline > *:not(:first-child) {
   margin-left: 5px;
+}
+.msg {
+  margin: 20px auto;
+  height: 20px;
 }
 </style>
