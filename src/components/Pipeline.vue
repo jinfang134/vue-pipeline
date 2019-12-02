@@ -32,7 +32,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 200
+      default: 600
     },
     //第一个点的y座标
     y: {
