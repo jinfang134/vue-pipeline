@@ -13,7 +13,8 @@
   "main": "index.js",
   "scripts": {
     "test": "ava test/*.test.js --verbose",
-    "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}"
+    "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}",
+    "publish-npm":"npm publish --registry=https://registry.npmjs.org/"
   },
   "husky": {
     "hooks": {

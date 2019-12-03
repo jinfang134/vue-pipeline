@@ -2,9 +2,9 @@
 
 One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.
 
-[中文](/docs/cn.md)
+[中文](https://github.com/jinfang134/vue-pipeline/blob/master/docs/cn.md)
 
-![sample](./resources/sample.png)
+![sample](https://github.com/jinfang134/vue-pipeline/raw/master/resources/sample.png)
 
 To get started, check out:
 
