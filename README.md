@@ -72,7 +72,7 @@ Vue.use(VuePipeline)
 | next: index    |    number   |    null     |   The index of another node of this edge |
 | next: weight    |    number   |    null     |   The weight of this edge |
 
-**Sample:**
+**Sample Data:**
 ```javascript
 let data = [
     {
