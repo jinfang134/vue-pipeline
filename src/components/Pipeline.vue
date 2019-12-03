@@ -34,6 +34,11 @@ export default {
       type: Number,
       default: 600
     },
+     // 第一个点的起始位置
+    x: {
+      type: Number,
+      default: 50
+    },
     //第一个点的y座标
     y: {
       type: Number,
@@ -46,11 +51,6 @@ export default {
     },
     // y 轴上相邻两个点之间的距离
     ystep: {
-      type: Number,
-      default: 50
-    },
-    // 第一个点的起始位置
-    xstart: {
       type: Number,
       default: 50
     },
@@ -95,7 +95,7 @@ export default {
     render() {
       this.service = new Pipeline(
         this.data,
-        this.xstart,
+        this.x,
         this.y,
         this.xstep,
         this.ystep,

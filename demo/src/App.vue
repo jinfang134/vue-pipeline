@@ -111,12 +111,10 @@ export default {
         to: 0
       },
       msg: ""
-      // data: data
     };
   },
   watch: {},
   methods: {
-    getData() {},
     fresh() {
       switch (this.form.data) {
         case 0:
