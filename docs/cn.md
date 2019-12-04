@@ -48,8 +48,6 @@ Vue.use(VuePipeline)
 
 | Name      | Type    | Default | Description                                          |
 | --------- | ------- | ------- | ---------------------------------------------------- |
-| width     | Number  | 1280    | 整个图形的宽度                             |
-| height    | number  | 600     |  整个图形的高度                                               |
 | x         | number  | 50      | 第一个节点的x坐标                         |
 | y         | number  | 55      |  第一个节点的y坐标                        |
 | xstep     | number  | 120     | 相邻两个节点之间x轴上的间隔  |

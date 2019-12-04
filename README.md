@@ -51,8 +51,6 @@ Vue.use(VuePipeline)
 
 | Name      | Type    | Default | Description                                          |
 | --------- | ------- | ------- | ---------------------------------------------------- |
-| width     | Number  | 1280    | The width of whole graph                             |
-| height    | number  | 600     | Height                                               |
 | x         | number  | 50      | The x coordinate of the starting point of the graph                         |
 | y         | number  | 55      | The y coordinate of the starting point of the graph                        |
 | xstep     | number  | 120     | The position horizontally from a previous node.  |
