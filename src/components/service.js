@@ -21,6 +21,8 @@ class Pipeline {
     this.ystep = ystep;
     this.positionList = new Set();
     this.solvedList = [];
+    this.align = 'top';
+    // this.align = 'center';
     this.lineStyle = lineStyle
     this.sortedList = this.topologicalSorting();
     this.matrix = [] //存放各个顶点的相对坐标
@@ -102,11 +104,11 @@ class Pipeline {
       if (this.lineStyle === 'default') {
         let firstCorner = end.x - start.x - 50;
         const d = `M ${start.x + 10} ${start.y}\
-              l ${20} 0\
+              l ${this.ystep / 2} 0\
               ${rt} \
               l 0 ${midy - 24} \
               ${lb} \
-              l ${firstCorner - 20} 0
+              l ${firstCorner - this.ystep / 2} 0
           `;
         return d;
       }
@@ -131,13 +133,12 @@ class Pipeline {
 
       if (this.lineStyle == 'default') {
         let lastCorner = end.x - start.x - 50;
-        const d = `M ${start.x + 14} ${start.y}\
-        l ${lastCorner - 20} 0\
+        const d = `M ${start.x + 10} ${start.y}\
+        l ${lastCorner - this.ystep / 2} 0\
         ${rb} \
         l 0 -${midy - 24} \
         ${lt} \
-        l ${20} 0
-        `;
+        l ${this.ystep / 2} 0 `;
         // console.log(d)
         return d;
       }
@@ -195,17 +196,56 @@ class Pipeline {
       }
     }
 
-    for (let i = 0; i < this.matrix.length; i++) {
-      for (let j = 0; j < this.matrix.length; j++) {
-        let index = this.matrix[i][j]
-        if (index != undefined) {
-          this.nodes[index].x = this.startx + this.xstep * j;
-          this.nodes[index].y = this.starty + this.ystep * i;
-          this.width=Math.max(this.width, this.nodes[index].x+this.startx)
-          this.height=Math.max(this.height, this.nodes[index].y+this.starty)
+    if (this.align == 'center') {
+      let maxy = this.getMaxY()
+
+      for (let j = 0; j < this.matrix[0].length; j++) { //x
+        let thisYnum = this.getNumbersOfx(j)
+        let starty = this.starty;
+        if (thisYnum < maxy) {
+          starty = this.starty + ((maxy - 1) * this.ystep - (thisYnum - 1) * this.ystep) / 2
+        }
+        for (let i = 0; i < this.matrix.length; i++) { //y
+          let index = this.matrix[i][j]
+          if (index != undefined) {
+            this.nodes[index].x = this.startx + this.xstep * j;
+            this.nodes[index].y = starty + this.ystep * i;
+            this.width = Math.max(this.width, this.nodes[index].x + this.startx)
+            this.height = Math.max(this.height, this.nodes[index].y + this.starty)
+          }
+        }
+      }
+    } else {
+      for (let j = 0; j < this.matrix[0].length; j++) { //x
+        for (let i = 0; i < this.matrix.length; i++) { //y
+          let index = this.matrix[i][j]
+          if (index != undefined) {
+            this.nodes[index].x = this.startx + this.xstep * j;
+            this.nodes[index].y = this.starty + this.ystep * i;
+            this.width = Math.max(this.width, this.nodes[index].x + this.startx)
+            this.height = Math.max(this.height, this.nodes[index].y + this.starty)
+          }
         }
       }
     }
+  }
+
+  getNumbersOfx(x) {
+    let number = 0
+    for (let i = 0; i < this.matrix.length; i++) {
+      if (this.matrix[i][x] != undefined) {
+        number++
+      }
+    }
+    return number;
+  }
+
+  getMaxY() {
+    let max = 0;
+    for (let i = 0; i < this.matrix[0].length; i++) {
+      max = Math.max(max, this.getNumbersOfx(i))
+    }
+    return max;
   }
 
   /**
