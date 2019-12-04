@@ -1,10 +1,14 @@
 {
   "name": "vue-pipeline",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "author": "Zuo Jinfang <jinfang134@sina.com>",
   "license": "MIT",
   "description": "One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jinfang134/vue-pipeline"
+  },
   "keywords": [
     "vue",
     "components",
