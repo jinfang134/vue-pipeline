@@ -27,8 +27,11 @@ class Pipeline {
     for (let i = 0; i < nodes.length; i++) {
       this.matrix[i] = []
     }
-    console.log(startx,starty,xstep,ystep)
+    this.width = 0;
+    this.height = 0;
   }
+
+
 
   getLines() {
     let list = [];
@@ -154,7 +157,7 @@ class Pipeline {
     for (let i = 0; i < this.matrix.length; i++) {
       for (let j = 0; j < this.matrix[i].length; j++) {
         if (this.matrix[i][j] == index) {
-          return [i,j]
+          return [i, j]
         }
       }
     }
@@ -176,7 +179,7 @@ class Pipeline {
       let sindex = this.sortedList[i]
       if (!this.solvedList[sindex]) {
         let fatherIndex = this.findSolvedFather(sindex)
-        let [y,x] = this.getPositionInMatrix(fatherIndex) //找到父节点在矩阵中的坐标
+        let [y, x] = this.getPositionInMatrix(fatherIndex) //找到父节点在矩阵中的坐标
         let list = this.findLongestWay(sindex);
         let startx = x + 1;
 
@@ -195,9 +198,11 @@ class Pipeline {
     for (let i = 0; i < this.matrix.length; i++) {
       for (let j = 0; j < this.matrix.length; j++) {
         let index = this.matrix[i][j]
-        if (index!=undefined) {
+        if (index != undefined) {
           this.nodes[index].x = this.startx + this.xstep * j;
           this.nodes[index].y = this.starty + this.ystep * i;
+          this.width=Math.max(this.width, this.nodes[index].x+this.startx)
+          this.height=Math.max(this.height, this.nodes[index].y+this.starty)
         }
       }
     }

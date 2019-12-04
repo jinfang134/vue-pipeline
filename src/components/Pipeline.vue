@@ -12,7 +12,7 @@
       :weight="item.weight" :lineStyle="lineStyle" />
     <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
       :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
-      @click="handleClick"  />
+      @click="handleClick" />
   </svg>
 </template>
 <script>
@@ -26,15 +26,7 @@ export default {
     PipelineLine
   },
   props: {
-    width: {
-      type: Number,
-      default: 1280
-    },
-    height: {
-      type: Number,
-      default: 600
-    },
-     // 第一个点的起始位置
+    // 第一个点的起始位置
     x: {
       type: Number,
       default: 50
@@ -70,6 +62,8 @@ export default {
   data() {
     return {
       nodeList: [],
+      width: 300,
+      height: 300,
       lineList: [],
       selectedList: [],
       service: {}
@@ -101,20 +95,21 @@ export default {
         this.ystep,
         this.lineStyle
       );
-      if(this.service.hasCircle()){
-        throw new Error('Error data, The graph should not contain any circle!')
+      if (this.service.hasCircle()) {
+        throw new Error("Error data, The graph should not contain any circle!");
       }
       this.service.calculateAllPosition();
       // this.service.optimize();
       this.nodeList = this.service.nodes;
       this.lineList = this.service.getLines();
+      this.width = this.service.width;
+      this.height = this.service.height;
     }
   },
   mounted() {
     this.render();
     this.selectedList.fill(false, 0, this.nodeList.length);
-  },
-
+  }
 };
 </script>
 

@@ -9,14 +9,14 @@
       <el-form ref="form" :model="form" label-width="100px" @validate="fresh">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Width">
-              <el-input v-model="form.width"></el-input>
+            <el-form-item label="x">
+              <el-input v-model="form.x"></el-input>
             </el-form-item>
 
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Height">
-              <el-input v-model="form.height"></el-input>
+            <el-form-item label="y">
+              <el-input v-model="form.y"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -71,7 +71,7 @@
     <div class="msg"> You selected :{{msg}}</div>
     <el-tabs v-model="tab" type="card">
       <el-tab-pane label="Pipeline" name="pipeline">
-        <vue-pipeline ref="pipeline" :data="data" :width="form.width" :showArrow="form.showArrow" :height="parseInt(form.height)"
+        <vue-pipeline ref="pipeline" :x="parseInt(form.x)" :y="parseInt(form.y)" :data="data" :showArrow="form.showArrow"
           :ystep="parseInt(form.ystep)" :xstep="parseInt(form.xstep)" :lineStyle="form.lineStyle" @select="handleSelect" />
       </el-tab-pane>
       <el-tab-pane label="Data" name="data">
@@ -100,8 +100,8 @@ export default {
       tab: "pipeline",
       data: hue1.nodes,
       form: {
-        height: 800,
-        width: 1200,
+        x:50,
+        y: 55,
         xstep: 120,
         ystep: 70,
         data: 0,
