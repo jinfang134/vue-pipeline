@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd demo \
+cd demo && yarn \
 && npm run build \
 && mv dist /tmp/ \
 && cd .. \
