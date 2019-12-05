@@ -18,7 +18,8 @@
   "scripts": {
     "test": "ava test/*.test.js --verbose",
     "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}",
-    "publish-npm":"npm publish --registry=https://registry.npmjs.org/"
+    "publish-npm":"npm publish --registry=https://registry.npmjs.org/",
+    "deploy:demo":"cd demo && npm run build && mv dist /tmp/ && cd .. && git checkout gh-pages && rm -rf ./* && mv -R /tmp/dist/* ./"
   },
   "husky": {
     "hooks": {
