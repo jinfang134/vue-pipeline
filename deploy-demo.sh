@@ -6,4 +6,5 @@ cd demo \
 && cd .. \
 && git checkout gh-pages \
 && rm -rf ./* \
-&& mv -R /tmp/dist/* ./
+&& mv  /tmp/dist/* ./ \
+&& git add . && git commit -m "update demo page" && git push origin gh-pages
