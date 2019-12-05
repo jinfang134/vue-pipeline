@@ -31,7 +31,61 @@ class Pipeline {
     this.height = 0;
   }
 
+  /**
+   * 判断当前的图是否是一棵树
+   */
+  isTree() {
+    let set = new Set();
+    for (let i = 0; i < this.nodes.length; i++) {
+      if (this.nodes[i].next) {
+        if (this.nodes[i].next.some(it => set.has(it.index))) {
+          return false;
+        }
+        this.nodes[i].next.forEach(it => set.add(it.index))
+      }
+    }
+    return true;
+  }
 
+  /**
+    * 计算一个树要占的宽度
+    * @param {*} index
+    */
+  getWidthOfTree(index) {
+    let node = this.nodes[index]
+    if (!node.next || node.next.length == 0) {
+      return 1;
+    }
+
+    let width = 0;
+    for (let i = 0; i < node.next.length; i++) {
+      width += this.getWidthOfTree(node.next[i].index)
+    }
+    return width;
+  }
+
+
+  /**
+   * 为树分配节点的位置
+   * @param {*} index
+   * @param {*} x
+   * @param {*} y
+   */
+  assignNodeForTree(index, x, y) {
+    this.matrix[y][x] = index
+    let node = this.nodes[index]
+    if (!node.next || node.next.length == 0) {
+      return;
+    }
+
+    let xx = x + 1; let yy = y;
+
+    for (let i = 0; i < node.next.length; i++) {
+      let width = this.getWidthOfTree(node.next[i].index)
+      this.assignNodeForTree(node.next[i].index, xx, yy)
+      yy += width;
+    }
+  }
 
   getLines() {
     let list = [];
@@ -168,6 +222,18 @@ class Pipeline {
    * 计算每个点的坐标
    */
   calculateAllPosition() {
+    if (this.isTree()) {
+      this.assignNodeForTree(0, 0, 0)
+    } else {
+      this.assignNodeForGraph()
+    }
+    this.calCoordinateForMatrix()
+  }
+
+  /**
+   * 为图的每个节点计算坐标位置
+   */
+  assignNodeForGraph() {
     // 查找最长的路径，并为其分配坐标
     let list = this.findLongestWay(0)
     list.forEach((it, index) => {
@@ -194,15 +260,17 @@ class Pipeline {
         })
       }
     }
+  }
 
+  calCoordinateForMatrix() {
     for (let i = 0; i < this.matrix.length; i++) {
       for (let j = 0; j < this.matrix.length; j++) {
         let index = this.matrix[i][j]
         if (index != undefined) {
           this.nodes[index].x = this.startx + this.xstep * j;
           this.nodes[index].y = this.starty + this.ystep * i;
-          this.width=Math.max(this.width, this.nodes[index].x+this.startx)
-          this.height=Math.max(this.height, this.nodes[index].y+this.starty)
+          this.width = Math.max(this.width, this.nodes[index].x + this.startx)
+          this.height = Math.max(this.height, this.nodes[index].y + this.starty)
         }
       }
     }
