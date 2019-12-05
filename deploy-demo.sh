@@ -2,9 +2,9 @@
 
 cd demo && yarn \
 && npm run build \
-&& mv dist /tmp/ \
+&& rm -rf /tmp/dist && mv -f dist /tmp/dist \
 && cd .. \
 && git checkout gh-pages \
 && rm -rf ./* \
-&& mv  /tmp/dist/* ./ \
+&& mv -f  /tmp/dist/* ./ \
 && git add . && git commit -m "update demo page" && git push origin gh-pages
