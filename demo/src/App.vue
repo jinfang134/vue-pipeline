@@ -52,7 +52,7 @@
             <el-radio :label="1">HUE 2</el-radio>
             <el-radio :label="2">Tree</el-radio>
             <el-radio :label="3">Sample 4</el-radio>
-            <el-radio :label="4">Sample 5</el-radio>
+            <!-- <el-radio :label="4">Sample 5</el-radio> -->
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Add Line">
