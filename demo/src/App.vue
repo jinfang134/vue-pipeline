@@ -48,9 +48,9 @@
         </el-form-item>
         <el-form-item label="Samples">
           <el-radio-group v-model="form.data" @input="fresh">
-            <el-radio :label="0">Sample 1 </el-radio>
-            <el-radio :label="1">Sample 2</el-radio>
-            <el-radio :label="2">Sample 3</el-radio>
+            <el-radio :label="0">HUE 1 </el-radio>
+            <el-radio :label="1">HUE 2</el-radio>
+            <el-radio :label="2">Tree</el-radio>
             <el-radio :label="3">Sample 4</el-radio>
             <el-radio :label="4">Sample 5</el-radio>
           </el-radio-group>

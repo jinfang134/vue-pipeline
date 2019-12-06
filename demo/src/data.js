@@ -9,7 +9,7 @@ const hue3 = {
     {
       name: "Ammouncement Import", hint: '1m23s', status: 'success', next: [
         { index: 2, weight: 0 },
-        { index: 4, weight: 2 }
+        { index: 3, weight: 2 }
       ]
     },
     {
