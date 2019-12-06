@@ -1,6 +1,6 @@
 {
   "name": "vue-pipeline",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "author": "Zuo Jinfang <jinfang134@sina.com>",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "preversion": "npm test && npm run lint",
     "version": "git add .",
     "postversion": "git push && git push --tags && npm publish --registry=https://registry.npmjs.org/",
-    "deploy:demo":"bash ./deploy-demo.sh"
+    "deploy:demo": "bash ./deploy-demo.sh"
   },
   "husky": {
     "hooks": {
