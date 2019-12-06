@@ -18,7 +18,7 @@
   "scripts": {
     "test": "ava test/*.test.js --verbose",
     "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}",
-    "preversion": "npm test&& npm lint",
+    "preversion": "npm test && npm run lint",
     "version": "git add .",
     "postversion": "git push && git push --tags && npm publish --registry=https://registry.npmjs.org/",
     "deploy:demo":"bash ./deploy-demo.sh"

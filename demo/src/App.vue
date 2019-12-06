@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import hue from "./hue.vue";
+// import hue from "./hue.vue";
 import { hue1, hue3, sample, sample3, sample2 } from "./data.js";
 
 export default {
