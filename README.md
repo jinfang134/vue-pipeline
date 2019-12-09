@@ -1,5 +1,11 @@
 # vue-pipeline
 
+[![npm](https://img.shields.io/npm/v/vue-pipeline.svg )](https://www.npmjs.com/package/vue-pipeline)
+[![npm](https://img.shields.io/npm/dt/vue-pipeline.svg)](https://www.npmjs.com/package/vue-pipeline)
+[![GitHub stars](https://img.shields.io/github/stars/jinfang134/vue-pipeline.svg?style=social&label=Stars&style=for-the-badge)](https://github.com/jinfang134/vue-pipeline/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jinfang134/vue-pipeline.svg?style=social&label=Fork&style=for-the-badge)](https://github.com/jinfang134/vue-pipeline/network)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/jinfang134/vue-pipeline/blob/master/LICENSE)
+
 One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.
 
 [中文](https://github.com/jinfang134/vue-pipeline/blob/master/docs/cn.md)
@@ -65,7 +71,7 @@ Vue.use(VuePipeline)
 | --------- | ------- | ------- | ---------------------------------------------------- |
 |name     | string | null | The title of each node  |
 |hint     | string | null |  The hint of each node |
-|status   | string | null |  Status of each node |
+|status   | string | null |  Status of each node, There are 6 type of status: `start`,`succeed`,`failure`,`paused`,`unstable`,`end`|
 |next     | Array | [] |  The edge connected with this node |
 | next: index    |    number   |    null     |   The index of another node of this edge |
 | next: weight    |    number   |    null     |   The weight of this edge |
@@ -127,6 +133,12 @@ yarn install
 yarn run serve
 ```
 
+### publish a new version
+```
+npm version patch
+npm version minor
+npm version major
+```
 
 ### Lints and fixes files
 ```
