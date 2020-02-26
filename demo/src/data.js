@@ -41,7 +41,7 @@ const hue1 = {
       ]
     },
     {
-      name: "Employee ID to Onboarding", hint: '2m23s', status: 'unstable', next: [
+      name: "Employee ID to Onboarding", hint: '2m23s', status: 'success', next: [
         { index: 3, weight: 2 },
         { index: 4, weight: 2 },
         { index: 5, weight: 2 },
@@ -67,7 +67,7 @@ const hue1 = {
       ]
     },
     {
-      name: "Education Info", hint: '2m23s', status: 'success', next: [
+      name: "Education Info", hint: '2m23s', status: 'running', next: [
         { index: 10, weight: 0 },
       ]
     },
@@ -118,7 +118,7 @@ const sample = {
     },
     { name: "test2 hello world", hint: '2m23s', status: 'unstable', next: [{ index: 5 }] },
     { name: "test3", hint: '2m23s', status: 'success', next: [{ index: 7, weight: 1 }] },
-    { name: "test4 ha", hint: '2m23s', status: 'failure', next: [{ index: 8 }, { index: 9 }] },//4
+    { name: "test4 ha", hint: '2m23s', status: 'running', next: [{ index: 8 }, { index: 9 }] },//4
     { name: "test5", hint: '2m23s', status: 'failure', next: [{ index: 6 }] },
     { name: "test6", hint: '2m23s', status: 'success', next: [{ index: 10 }] },//6
     { name: "test7 hello", hint: '2m23s', status: 'paused', next: [{ index: 12 }, { index: 13 }] },
@@ -167,7 +167,7 @@ const sample2 = {
     { "index": 9 }], "x": 290, "y": 55
   },
   { "name": "test5", "hint": "2m23s", "status": "failure", "next": [{ "index": 6 }], "x": 410, "y": 55 },
-  { "name": "test6", "hint": "2m23s", "status": "success", "next": [{ "index": 10 }], "x": 530, "y": 55 },
+  { "name": "test6", "hint": "2m23s", "status": "running", "next": [{ "index": 10 }], "x": 530, "y": 55 },
   {
     "name": "test7 hello", "hint": "2m23s", "status": "paused", "next": [{ "index": 12 },
     { "index": 13 }, { "index": "10" }], "x": 650, "y": 55

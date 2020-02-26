@@ -28,6 +28,11 @@
           <polygon points="-1 -5 1 -5 1 1 -1 1" />
           <polygon points="-1 3 1 3 1 5 -1 5" />
         </g>
+        <g class="result-status-glyph running" v-if="status=='running'">
+          <path transform="scale(0.03 0.03) translate(-514,-510)"
+            d="M604.16 1003.52V898.458A410.317 410.317 0 0 0 898.458 604.16h105.062a512.614 512.614 0 0 1-399.36 399.36z m-204.8 0A512.614 512.614 0 0 1 0 604.16h105.062A410.317 410.317 0 0 0 399.36 898.458v105.062z m204.8-898.458V0a512.614 512.614 0 0 1 399.36 399.36H898.458A410.317 410.317 0 0 0 604.16 105.062z m-204.8 0A410.317 410.317 0 0 0 105.062 399.36H0A512.614 512.614 0 0 1 399.36 0v105.062zM512 665.6a153.6 153.6 0 1 0 0-307.2 153.6 153.6 0 0 0 0 307.2z m0 102.4a256 256 0 1 1 0-512 256 256 0 0 1 0 512z"
+            p-id="10371"></path>
+        </g>
       </g>
     </g>
 
@@ -44,9 +49,9 @@
   </g>
 </template>
 <script>
-import stringWidth from "string-width";
-import PipelineNodeStart from "./PipelineNodeStart";
-import PipelineNodeEnd from "./PipelineNodeEnd";
+import stringWidth from 'string-width'
+import PipelineNodeStart from './PipelineNodeStart'
+import PipelineNodeEnd from './PipelineNodeEnd'
 export default {
   components: {
     PipelineNodeStart,
@@ -81,42 +86,42 @@ export default {
   },
   data() {
     return {
-      nodeClass: "pipeline-node"
-    };
+      nodeClass: 'pipeline-node'
+    }
   },
   methods: {
     getText() {
-      let maxLength = 14;
+      let maxLength = 14
       let text =
         this.label.length > maxLength
-          ? this.label.substring(0, maxLength) + "..."
-          : this.label;
-      let width = stringWidth(text);
+          ? this.label.substring(0, maxLength) + '...'
+          : this.label
+      let width = stringWidth(text)
       return {
         x: -width * 2.7,
         y: -20,
         text
-      };
+      }
     },
     handleClick() {
       // console.log("click", this.node);
-      this.nodeClass = "pipeline-node-selected";
-      if (this.status != "start" && this.status != "end") {
-        this.$emit("click", this.index, this.node);
+      this.nodeClass = 'pipeline-node-selected'
+      if (this.status != 'start' && this.status != 'end') {
+        this.$emit('click', this.index, this.node)
       }
     },
     getTextWidth(text, font) {
       // re-use canvas object for better performance
       var canvas =
         this.getTextWidth.canvas ||
-        (this.getTextWidth.canvas = document.createElement("canvas"));
-      var context = canvas.getContext("2d");
-      context.font = font;
-      var metrics = context.measureText(text);
-      return metrics.width;
+        (this.getTextWidth.canvas = document.createElement('canvas'))
+      var context = canvas.getContext('2d')
+      context.font = font
+      var metrics = context.measureText(text)
+      return metrics.width
     }
   }
-};
+}
 </script>
 <style lang="css">
 .pipeline-node-selected .svgResultStatus > circle {
@@ -148,6 +153,10 @@ export default {
 .svgResultStatus > circle.unknown {
   fill: #d54cc4;
 }
+.svgResultStatus > circle.running {
+  fill: #fff;
+}
+
 .pipeline-node-label {
   font: 12px sans-serif;
   font-size: 12px;
@@ -161,5 +170,10 @@ export default {
   width: 89px;
   /* max-height: 39px; */
   text-align: center;
+}
+.running {
+  fill: #8ccc4f;
+  animation: rotating 2s linear infinite;
+  animation-iteration-count: infinite;
 }
 </style>
