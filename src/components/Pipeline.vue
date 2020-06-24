@@ -12,7 +12,7 @@
       :weight="item.weight" :lineStyle="lineStyle" />
     <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
       :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
-      @click="handleClick" />
+      @click="handleClick" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"/>
   </svg>
 </template>
 <script>
@@ -85,6 +85,12 @@ export default {
       this.$set(this.selectedList, index, true);
       this.selectedList[index] = true;
       this.$emit("select", node);
+    },
+    handleMouseEnter(index, node) {
+      this.$emit("mouseenter", node);
+    },
+    handleMouseLeave(index, node) {
+      this.$emit("mouseleave", node);
     },
     render() {
       this.service = new Pipeline(
