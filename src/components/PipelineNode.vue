@@ -1,5 +1,5 @@
 <template>
-  <g :transform="'translate('+x+','+y+')'" :class="nodeClass">
+  <g :transform="'translate('+x+','+y+')'" :class="nodeClass" cursor="pointer" @click="handleClick" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
 
     <pipeline-node-start v-if="status=='start'" :label="label" />
     <pipeline-node-end v-if="status=='end'" :label="label" />
@@ -39,7 +39,7 @@
     <title>{{hint}}</title>
 
     <!-- high light -->
-    <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none" cursor="pointer" @click="handleClick">
+    <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none">
     </circle>
     <g class="pipeline-selection-highlight" v-if="selected">
       <circle class="white-highlight" r="13" stroke-width="10"></circle>
@@ -109,6 +109,14 @@ export default {
       if (this.status != 'start' && this.status != 'end') {
         this.$emit('click', this.index, this.node)
       }
+    },
+    handleMouseEnter() {
+      this.nodeClass = 'pipeline-node-selected'
+      this.$emit('mouseenter', this.index, this.node)
+    },
+    handleMouseLeave() {
+      this.nodeClass = 'pipeline-node'
+      this.$emit('mouseleave', this.index, this.node)
     },
     getTextWidth(text, font) {
       // re-use canvas object for better performance
