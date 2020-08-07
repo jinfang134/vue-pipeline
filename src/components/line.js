@@ -20,6 +20,13 @@ export class EdgeService {
   // eslint-disable-next-line no-unused-vars
   drawEdge(start, end) {}
 
+  drawVerticalEdge(start, end) {
+      const radius=14
+    return `M ${start.x},${start.y + radius} L${start.x},${start.y + radius} ${end.x},${
+      end.y - radius
+    }`;
+  }
+
   drawHEdge(start, end) {
     if (end.x > start.x + this.xstep) {
       if (!start) {
@@ -69,7 +76,10 @@ class DefaultStyleService extends EdgeService {
 
   drawEdge(start, end) {
     if (start.y == end.y) {
-        return this.drawHEdge(start,end)
+      return this.drawHEdge(start, end);
+    }
+    if (start.x == end.x) {
+      return this.drawVerticalEdge(start, end);
     }
     const lb = "c 0 12 12 12 12 12";
     const rb = "c 12 0 12 -12 12 -12";
@@ -105,7 +115,10 @@ class DefaultStyleService extends EdgeService {
 class BesselStyleService extends EdgeService {
   drawEdge(start, end) {
     if (start.y == end.y) {
-        return this.drawHEdge(start,end)
+      return this.drawHEdge(start, end);
+    }
+    if (start.x == end.x) {
+      return this.drawVerticalEdge(start, end);
     }
     if (end.y > start.y) {
       let path = `M ${start.x + 12},${start.y}\
@@ -128,7 +141,7 @@ class BesselStyleService extends EdgeService {
 class LineStyleService extends EdgeService {
   drawEdge(start, end) {
     if (start.y == end.y) {
-        return this.drawHEdge(start,end)
+      return this.drawHEdge(start, end);
     }
     return this.getStraightLinePath(start, end);
   }
