@@ -88,7 +88,7 @@
 
 <script>
 // import hue from "./hue.vue";
-import { hue1, hue3, sample, sample3, sample2 } from "./data.js";
+import { hue1, hue3, sample, sample3, sample2,bug } from "./data.js";
 
 export default {
   name: "app",
@@ -118,7 +118,7 @@ export default {
     fresh() {
       switch (this.form.data) {
         case 0:
-          this.data = hue1.nodes;
+          this.data = bug;
           break;
         case 1:
           this.data = hue3.nodes;
@@ -156,30 +156,38 @@ export default {
 
 <style>
 #app {
+  /* text-align: center; */
+  color: #2c3e50;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 30px 30px;
-  /* text-align: center; */
-  color: #2c3e50;
+
   /* margin-top: 60px; */
+
   /* height: 100vh; */
+
   /* display: flex; */
+
   /* flex-direction: column; */
 }
+
 .setting {
   margin: 30px;
   width: 800px;
 }
+
 .addline {
   display: flex;
   width: 300px;
 }
+
 .addline > *:not(:first-child) {
   margin-left: 5px;
 }
+
 .msg {
-  margin: 20px auto;
   height: 20px;
+  margin: 20px auto;
 }
 </style>
