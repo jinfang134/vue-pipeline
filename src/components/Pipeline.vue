@@ -1,6 +1,6 @@
 
 <template>
-  <svg class="pipeline" :width="width" :height="height">
+  <svg class="pipeline" :viewBox="viewbox" preserveAspectRatio="xMinYMin meet">
     <defs>
       <marker :id="'idArrow'+i" v-for="i in [0,1,2,3,4,5]" :key="'arrow'+i" :class="'weight'+i" viewBox="0 0 20 20"
         refX="13" refY="10" markerUnits="strokeWidth" markerWidth="3" markerHeight="10" orient="auto">
@@ -66,7 +66,8 @@ export default {
       height: 300,
       lineList: [],
       selectedList: [],
-      service: {}
+      service: {},
+      viewbox: '0 0 0 0'
     };
   },
   computed: {
@@ -110,6 +111,7 @@ export default {
       this.lineList = this.service.getLines();
       this.width = this.service.width;
       this.height = this.service.height;
+      this.viewbox = `0 0 ${this.width} ${this.height}`;
     }
   },
   mounted() {
