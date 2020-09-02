@@ -1,7 +1,7 @@
 <template>
   <g class="pipeline-node-end">
     <circle cx="0" cy="0" r="12" class="circle-end"></circle>
-    <text id="svg_2" x="16" y="4" class="pipeline-node-end__text">{{label}}</text>
+    <text id="svg_2" x="-15" y="-18" class="pipeline-node-end__text">{{label}}</text>
   </g>
 </template>
 <script>
