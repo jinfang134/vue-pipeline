@@ -129,8 +129,9 @@ export default {
       return metrics.width
     }
   }
-}
+};
 </script>
+
 <style lang="css">
 .pipeline-node-selected .svgResultStatus > circle {
   stroke: none;
@@ -183,5 +184,13 @@ export default {
   fill: #8ccc4f;
   animation: rotating 2s linear infinite;
   animation-iteration-count: infinite;
+}
+@keyframes rotating {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
 }
 </style>
