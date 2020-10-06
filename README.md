@@ -68,7 +68,7 @@ Vue.use(VuePipeline)
 | ------------ | ------ | ------- | ---------------------------------------------------------------------------------------------------------------- |
 | name         | string | null    | The title of each node                                                                                           |
 | hint         | string | null    | The hint of each node                                                                                            |
-| status       | string | null    | Status of each node, There are 6 type of status: `start`,`succeed`,`running`,`failure`,`paused`,`unstable`,`end` |
+| status       | string | null    | Status of each node, There are 6 type of status: `start`,`succees`,`running`,`failure`,`paused`,`unstable`,`end` |
 | next         | Array  | []      | The edge connected with this node                                                                                |
 | next: index  | number | null    | The index of another node of this edge                                                                           |
 | next: weight | number | null    | The weight of this edge                                                                                          |
