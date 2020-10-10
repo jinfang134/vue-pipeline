@@ -2,10 +2,9 @@
   "name": "vue-pipeline-scalable",
   "version": "1.0.0",
   "private": false,
-  "author": "Animesh Kumar Singh",
+  "author": "",
   "license": "MIT",
   "description": "One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin. This is a scalable variant of vue-pipeline created by Zuo Jinfang",
-  "author": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/animesh-workplace/vue-pipeline"
@@ -23,12 +22,6 @@
     "version": "git add .",
     "postversion": "git push origin master && git push --tags && npm publish --registry=https://registry.npmjs.org/",
     "deploy:demo": "bash ./deploy-demo.sh"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn test",
-      "pre-push": "yarn lint"
-    }
   },
   "ava": {
     "require": [
@@ -64,7 +57,7 @@
     "> 1%",
     "last 2 versions"
   ],
-  "publishConfig": { 
-    "registry": "https://npm.pkg.github.com/" 
-  }  
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }
