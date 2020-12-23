@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/jinfang134/vue-pipeline.svg?style=social&label=Stars&style=for-the-badge)](https://github.com/jinfang134/vue-pipeline/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/jinfang134/vue-pipeline.svg?style=social&label=Fork&style=for-the-badge)](https://github.com/jinfang134/vue-pipeline/network)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/jinfang134/vue-pipeline/blob/master/LICENSE)
+[![Build Status](https://travis-ci.com/jinfang134/vue-pipeline.svg?branch=master)](https://travis-ci.com/jinfang134/vue-pipeline)
 
 One easy-to-use component to show beautiful responsive timeline like jenkins blue ocean plugin.
 
