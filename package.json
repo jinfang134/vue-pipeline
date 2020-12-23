@@ -16,12 +16,13 @@
   ],
   "main": "index.js",
   "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "test": "ava test/*.test.js --verbose",
-    "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/src/**/*.{js,vue}",
+    "lint": "eslint --quiet --cache --ext .vue,.js, src/** ./demo/*.{js,vue}",
     "preversion": "npm test && npm run lint",
     "version": "git add .",
-    "postversion": "git push origin master && git push --tags && npm publish --registry=https://registry.npmjs.org/",
-    "deploy:demo": "bash ./deploy-demo.sh"
+    "postversion": "git push origin master && git push --tags && npm publish --registry=https://registry.npmjs.org/"
   },
   "husky": {
     "hooks": {
@@ -46,12 +47,17 @@
   "devDependencies": {
     "@babel/register": "^7.7.4",
     "@vue/babel-preset-app": "^4.1.1",
+    "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
     "ava": "^2.4.0",
+    "element-ui": "^2.13.0",
+    "vue": "^2.6.10",
     "babel-eslint": "^10.0.1",
     "core-js": "^3.4.5",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^6.0.1",
+    "vue-template-compiler": "^2.6.10",
     "husky": "^3.1.0"
   },
   "postcss": {
