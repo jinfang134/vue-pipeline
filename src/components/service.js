@@ -48,6 +48,7 @@ class Pipeline {
   }
 
   /**
+   * Getting the width of tree
    * @param {*} index
    */
   getWidthOfTree(index) {
