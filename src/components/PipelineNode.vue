@@ -6,7 +6,9 @@
 
     <g v-if="status!=='start' && status!=='end'">
       <g>
-        <text :x="getText().x" :y="getText().y" class="pipeline-node-label">{{getText().text}}</text>
+        <text :x="getText(label).x" :y="getText(label).y-26" class="pipeline-node-label">{{getText(label).text}}</text>
+        <text :x="getText(tool).x" :y="getText(tool).y-12" class="pipeline-node-label">{{getText(tool).text}}</text>
+        <text :x="getText(count).x" :y="getText(count).y+2" class="pipeline-node-label">{{getText(count).text}}</text>
         <title>{{label}}</title>
       </g>
       <g class="svgResultStatus">
@@ -38,7 +40,7 @@
 
     <title>{{hint}}</title>
 
-    <!-- high light -->
+    <!-- highlight -->
     <circle r="19" class="pipeline-node-hittarget" fill-opacity="0" stroke="none">
     </circle>
     <g class="pipeline-selection-highlight" v-if="selected">
@@ -70,6 +72,12 @@ export default {
     label: {
       type: String
     },
+    tool: {
+      type: String
+    },
+    count: {
+      type: String
+    },
     x: {
       type: Number
     },
@@ -90,12 +98,12 @@ export default {
     }
   },
   methods: {
-    getText() {
-      let maxLength = 14
+    getText(label) {
+      let maxLength = 16
       let text =
-        this.label.length > maxLength
-          ? this.label.substring(0, maxLength) + '...'
-          : this.label
+        label.length > maxLength
+          ? label.substring(0, maxLength) + '...'
+          : label
       let width = stringWidth(text)
       return {
         x: -width * 2.7,
