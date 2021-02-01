@@ -11,7 +11,7 @@ class Pipeline {
    * @param {*} starty
    * @param {*} xstep
    * @param {*} ystep
-   * @param {*} lineStyle 线型，目前支持三种线型： default(默认)，line(直线)，bessel(贝塞尔曲线)
+   * @param {*} lineStyle ： default，line，bessel
    */
   constructor(nodes, startx, starty, xstep, ystep, lineStyle = "default") {
     this.nodes = nodes;
@@ -23,7 +23,7 @@ class Pipeline {
     this.solvedList = [];
     this.lineStyle = lineStyle;
     this.sortedList = this.topologicalSorting();
-    this.matrix = []; //存放各个顶点的相对坐标
+    this.matrix = [];
     for (let i = 0; i < nodes.length; i++) {
       this.matrix[i] = [];
     }
@@ -32,7 +32,7 @@ class Pipeline {
   }
 
   /**
-   * 判断当前的图是否是一棵树
+   * Creates the tree structure
    */
   isTree() {
     let set = new Set();
@@ -48,7 +48,6 @@ class Pipeline {
   }
 
   /**
-   * 计算一个树要占的宽度
    * @param {*} index
    */
   getWidthOfTree(index) {
@@ -65,7 +64,6 @@ class Pipeline {
   }
 
   /**
-   * 为树分配节点的位置
    * @param {*} index
    * @param {*} x
    * @param {*} y
@@ -111,7 +109,7 @@ class Pipeline {
     return list;
   }
 
-  
+
   getPositionInMatrix(index) {
     for (let i = 0; i < this.matrix.length; i++) {
       for (let j = 0; j < this.matrix[i].length; j++) {
@@ -124,7 +122,7 @@ class Pipeline {
   }
 
   /**
-   * 计算每个点的坐标
+   * Calculate the position of nodes
    */
   calculateAllPosition() {
     if (this.isTree()) {
@@ -136,10 +134,9 @@ class Pipeline {
   }
 
   /**
-   * 为图的每个节点计算坐标位置
+   * Assign nodes to Graph
    */
   assignNodeForGraph() {
-    // 查找最长的路径，并为其分配坐标
     let list = this.findLongestWay(0);
     list.forEach((it, index) => {
       this.matrix[0][index] = it;
@@ -150,7 +147,7 @@ class Pipeline {
       let sindex = this.sortedList[i];
       if (!this.solvedList[sindex]) {
         let fatherIndex = this.findSolvedFather(sindex);
-        let [y, x] = this.getPositionInMatrix(fatherIndex); //找到父节点在矩阵中的坐标
+        let [y, x] = this.getPositionInMatrix(fatherIndex);
         let list = this.findLongestWay(sindex);
         let startx = x + 1;
 
@@ -185,13 +182,12 @@ class Pipeline {
   }
 
   /**
-   * 优化节点的位置,使其在x轴上左右居中,线的处理上还有bug
+   * Optimizing the position of y axis based the nearby nodes position
    */
   optimize() {
     for (let i = 0; i < this.nodes.length; i++) {
       let node = this.nodes[i];
       if (node.y == this.starty) {
-        // 第一行不变
         continue;
       }
       let parents = this.findParents(i);
@@ -206,7 +202,7 @@ class Pipeline {
   }
 
   /**
-   * 图的拓扑排序
+   * Sorting Topological position
    */
   topologicalSorting() {
     let visited = [];
@@ -226,8 +222,7 @@ class Pipeline {
   }
 
   /**
-   * 判断是否有环
-   * 如果有环，返回true
+   * Checking if there is a circular graph
    */
   hasCircle() {
     let list = this.topologicalSorting();
@@ -235,7 +230,7 @@ class Pipeline {
   }
 
   /**
-   * 往前找到第一个解决的父节点
+   * Father node
    * @param {*} index
    */
   findSolvedFather(index) {
@@ -253,7 +248,7 @@ class Pipeline {
   }
 
   /**
-   * 查找某个顶点的父顶点
+   * Finding Parents
    * @param {*} nodes
    * @param {*} index
    */
@@ -278,7 +273,7 @@ class Pipeline {
   }
 
   /**
-   * 查找从第{index}个节点开始的最长路径，返回经过的未被计算位置的节点,
+   * Finding the longest path,
    * @param {*} index
    */
   findLongestWay(index) {
@@ -302,7 +297,6 @@ class Pipeline {
   }
 
   /**
-   * 从第{index}个节点出发，深度优先搜索图
    * @param {*} nodes
    * @param {*} index
    */
