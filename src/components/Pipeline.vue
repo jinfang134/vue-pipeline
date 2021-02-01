@@ -2,17 +2,48 @@
 <template>
   <svg class="pipeline" :viewBox="viewbox" preserveAspectRatio="xMinYMin meet">
     <defs>
-      <marker :id="'idArrow'+i" v-for="i in [0,1,2,3,4,5]" :key="'arrow'+i" :class="'weight'+i" viewBox="0 0 20 20"
-        refX="13" refY="10" markerUnits="strokeWidth" markerWidth="3" markerHeight="10" orient="auto">
-        <path d="M 0 0 L 20 10 L 0 20 z" />
+      <marker
+        refX="13"
+        refY="10"
+        orient="auto"
+        markerWidth="3"
+        :key="'arrow'+i"
+        :id="'idArrow'+i"
+        markerHeight="10"
+        :class="'weight'+i"
+        viewBox="0 0 20 20"
+        markerUnits="strokeWidth"
+        v-for="i in [0,1,2,3,4,5]"
+      >
+        <path d="M 0 0 L 20 10 L 0 20 z"/>
       </marker>
     </defs>
 
-    <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :showArrow="showArrow" :path="item.path"
-      :weight="item.weight" :lineStyle="lineStyle" />
-    <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
-      :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
-      @click="handleClick" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"/>
+    <pipeline-line
+      :path="item.path"
+      :key="'line'+index"
+      :weight="item.weight"
+      :showArrow="showArrow"
+      :lineStyle="lineStyle"
+      v-for="(item,index) in lineList"
+    />
+    <pipeline-node
+      :x="item.x"
+      :y="item.y"
+      :node="item"
+      :index="idx"
+      :key="'node'+idx"
+      :tool="item.tool"
+      :hint="item.hint"
+      :label="item.name"
+      :count="item.count"
+      @click="handleClick"
+      :status="item.status"
+      :selected="selectedList[idx]"
+      v-for="(item,idx) in nodeList"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+    />
   </svg>
 </template>
 <script>
@@ -26,25 +57,25 @@ export default {
     PipelineLine
   },
   props: {
-    // 第一个点的起始位置
+    // Starting Point in X axis
     x: {
       type: Number,
       default: 50
     },
-    //第一个点的y座标
+    // Starting Point in y axis
     y: {
       type: Number,
       default: 55
     },
-    // x轴上相邻两个点之间的距离
+    // Gap between nodes in x axis
     xstep: {
       type: Number,
       default: 120
     },
-    // y 轴上相邻两个点之间的距离
+    // Gap between nodes in y axis
     ystep: {
       type: Number,
-      default: 50
+      default: 80
     },
     data: {
       type: Array,
@@ -61,12 +92,12 @@ export default {
   },
   data() {
     return {
-      nodeList: [],
       width: 300,
       height: 300,
+      service: {},
+      nodeList: [],
       lineList: [],
       selectedList: [],
-      service: {},
       viewbox: '0 0 0 0'
     };
   },
@@ -106,7 +137,7 @@ export default {
         throw new Error("Error data, The graph should not contain any circle!");
       }
       this.service.calculateAllPosition();
-      // this.service.optimize();
+      this.service.optimize();
       this.nodeList = this.service.nodes;
       this.lineList = this.service.getLines();
       this.width = this.service.width;
