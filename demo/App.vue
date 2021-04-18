@@ -6,7 +6,7 @@
 
     <div class="setting">
 
-      <el-form ref="form" :model="form" label-width="100px" @validate="fresh">
+      <el-form ref="formulary" :model="form" label-width="100px" @validate="fresh">
         <el-row>
           <el-col :span="12">
             <el-form-item label="x">
@@ -67,15 +67,16 @@
        </el-form-item>
 
       </el-form>
+      <div>{{form}}</div>
     </div>
     <div class="msg"> You selected :{{msg}}</div>
     <el-tabs v-model="tab" type="card">
       <el-tab-pane label="Pipeline" name="pipeline">
-        <vue-pipeline ref="pipeline" :x="parseInt(form.x)" :y="parseInt(form.y)" :data="data" :showArrow="form.showArrow"
-          :ystep="parseInt(form.ystep)" :xstep="parseInt(form.xstep)" :lineStyle="form.lineStyle" @select="handleSelect" />
+        <vue-pipeline ref="pipeline" :x="form.x" :y="form.y" :data="dataLocale" :showArrow="form.showArrow"
+          :ystep="form.ystep" :xstep="form.xstep" :lineStyle="form.lineStyle" @select="handleSelect" />
       </el-tab-pane>
       <el-tab-pane label="Data" name="data">
-        {{JSON.stringify(this.data)}}
+        {{dataLocale}}
       </el-tab-pane>
 
     </el-tabs>
@@ -88,70 +89,77 @@
 
 <script>
 // import hue from "./hue.vue";
-import { hue1, hue3, sample, sample3, sample2,bug } from "./data.js";
-
+import { hue1, hue3, sample, sample3, sample2, bug } from './data.js'
+import { ref, reactive, onMounted } from 'vue'
 export default {
-  name: "app",
-  components: {
-    // hue
-  },
-  data() {
-    return {
-      tab: "pipeline",
-      data: hue1.nodes,
-      form: {
-        x:50,
-        y: 55,
-        xstep: 120,
-        ystep: 70,
-        data: 0,
-        showArrow: true,
-        lineStyle: "default",
-        from: 0,
-        to: 0
-      },
-      msg: ""
-    };
-  },
-  watch: {},
-  methods: {
-    fresh() {
-      switch (this.form.data) {
+  name: 'app',
+  setup () {
+    const tab = ref('pipeline')
+    const pipeline = ref('')
+    const dataLocale = ref([])
+    dataLocale.value = hue1.nodes
+    const msg = ref('')
+    const formulary = ref('')
+    const form = ref(reactive({
+      x: 50,
+      y: 55,
+      xstep: 120,
+      ystep: 70,
+      data: 0,
+      showArrow: true,
+      lineStyle: 'default',
+      from: 0,
+      to: 0
+    }))
+    const fresh = () => {
+      switch (form.value.data) {
         case 0:
-          this.data = bug;
-          break;
+          dataLocale.value = bug
+          break
         case 1:
-          this.data = hue3.nodes;
-          break;
+          dataLocale.value = hue3.nodes
+          break
         case 2:
-          this.data = sample.nodes;
-          break;
+          dataLocale.value = sample.nodes
+          break
         case 3:
-          this.data = sample3.nodes;
-          break;
+          dataLocale.value = sample3.nodes
+          break
         case 4:
-          this.data = sample2.nodes;
-          break;
+          dataLocale.value = sample2.nodes
+          break
       }
-       this.$refs["pipeline"].render();
-    },
-    addLine() {
-      let list = this.data[this.form.from].next || [];
-      if (list.some(it => it.index == this.form.to)) {
-        alert("this line is exist");
-      }
-      list.push({ index: this.form.to });
-      this.data[this.form.from].next = list;
-      this.$refs["pipeline"].render();
-    },
-    handleSelect(node) {
-      this.msg = `{ ${node.name} }`;
+      pipeline.value.render()
     }
-  },
-  mounted() {
-    this.data = hue1.nodes;
+    const addLine = () => {
+      const list = dataLocale.value[form.value.from].next || []
+      if (list.some(it => it.index === form.value.to)) {
+        alert('this line is exist')
+      }
+      list.push({ index: form.value.to })
+      dataLocale.value[form.value.from].next = list
+      pipeline.value.render()
+    }
+    const handleSelect = (node) => {
+      msg.value = `{ ${node.name} }`
+    }
+    onMounted(() => {
+      dataLocale.value = hue1.nodes
+      console.log(dataLocale)
+    })
+    return {
+      tab,
+      dataLocale,
+      form,
+      msg,
+      pipeline,
+      formulary,
+      fresh,
+      addLine,
+      handleSelect
+    }
   }
-};
+}
 </script>
 
 <style>
