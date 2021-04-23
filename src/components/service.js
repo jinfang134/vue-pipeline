@@ -29,7 +29,6 @@ class Pipeline {
     }
     this.width = 0
     this.height = 0
-    console.log(nodes)
   }
 
   /**
@@ -254,7 +253,6 @@ class Pipeline {
 
   /**
    * 查找某个顶点的父顶点
-   * @param {*} nodes
    * @param {*} index
    */
   findParents (index) {
@@ -303,7 +301,6 @@ class Pipeline {
 
   /**
    * 从第{index}个节点出发，深度优先搜索图
-   * @param {*} nodes
    * @param {*} index
    */
   dfs (index) {
@@ -316,7 +313,6 @@ class Pipeline {
     while (queue.length > 0) {
       const first = queue.pop()
       visited[first] = true
-      console.log(first)
       result.push(first)
       const children = this.findChildren(first)
       for (let i = 0; i < children.length; i++) {
