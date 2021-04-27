@@ -1,6 +1,6 @@
 <template>
   <g :class="'pipeline-line '+'weight'+weight ">
-    <path stroke-width="3.5" :d="this.path" fill="none" :marker-end="getMarkerEnd()"> </path>
+    <path stroke-width="3.5" :d="path" fill="none" :marker-end="getMarkerEnd()"> </path>
   </g>
 </template>
 
@@ -17,34 +17,28 @@ export default {
     showArrow: {
       type: Boolean,
       default: false
+    },
+    ystep: {
+      type: Number,
+      default: 30
     }
   },
-  data() {
+  setup (props) {
+    const getMarkerEnd = () => {
+      if (props.showArrow) {
+        return `url(#idArrow${props.weight})`
+      }
+    }
+    const color = () => {
+      if (props.weight < 3) {
+        return ['#ddd', '#949393', '#8cc04f'][props.weight]
+      }
+    }
     return {
-      ystep: this.y1 + 30
-    };
-  },
-  computed: {},
-  methods: {
-    getMarkerEnd() {
-      if (this.showArrow) {
-        return `url(#idArrow${this.weight})`;
-      }
-    },
-    color() {
-      switch (this.weight) {
-        case 0:
-          return "#ddd";
-        case 1:
-          return "#949393";
-        case 2:
-          return "#8cc04f";
-        default:
-          break;
-      }
+      getMarkerEnd, color
     }
   }
-};
+}
 </script>
 <style lang="css">
 .pipeline-connector {

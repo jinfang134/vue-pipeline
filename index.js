@@ -3,13 +3,13 @@
  ***************************************************************************/
 
 // BASE COMPONENTS
-import VuePipeline from "./src/components/Pipeline.vue"
+import VuePipeline from './src/components/Pipeline.vue'
 
 /**************************************************************************
  * ENVIRONMENT CONFIGURATIONS
  ***************************************************************************/
 
-// install function executed by Vue.use()
+/*
 function install(Vue, options) {
   if (install.installed) {
     return
@@ -27,7 +27,7 @@ const plugin = {
 }
 
 // To auto-install when vue is found
-/* global window global */
+
 let GlobalVue = null
 
 if (typeof window !== "undefined") {
@@ -41,4 +41,10 @@ if (GlobalVue) {
 }
 
 // Default export is library as a whole, registered via Vue.use()
-export default plugin
+export default plugin */
+
+export default {
+  install: (app, options) => {
+    app.component('vue-pipeline', VuePipeline)
+  }
+}

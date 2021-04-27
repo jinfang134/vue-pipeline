@@ -11,7 +11,7 @@ export default {
       type: String
     }
   }
-};
+}
 </script>
 
 <style lang="css">

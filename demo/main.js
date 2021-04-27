@@ -1,18 +1,13 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import VuePipeline from '../index.js'
-// import VuePipeline from 'vue-pipeline'
+import ElementPlus from 'element-plus'
+import 'element-plus/lib/theme-chalk/index.css'
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-
-Vue.config.productionTip = false
-
-Vue.use(VuePipeline)
-Vue.use(ElementUI, {
+const app = createApp(App)
+app.use(VuePipeline)
+app.use(ElementPlus, {
   size: 'small'
 })
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+app.mount('#app')

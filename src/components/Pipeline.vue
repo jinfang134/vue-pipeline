@@ -1,4 +1,3 @@
-
 <template>
   <svg class="pipeline" :width="width" :height="height">
     <defs>
@@ -9,16 +8,17 @@
     </defs>
 
     <pipeline-line v-for="(item,index) in lineList" :key="'line'+index" :showArrow="showArrow" :path="item.path"
-      :weight="item.weight" :lineStyle="lineStyle" />
+      :weight="item.weight" :lineStyle="lineStyle" :ystep="ystep"/>
     <pipeline-node v-for="(item,idx) in nodeList" :key="'node'+idx" :hint="item.hint" :status="item.status"
       :label="item.name" :x="item.x" :y="item.y" :node="item" :index="idx" :selected="selectedList[idx]"
       @click="handleClick" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"/>
   </svg>
 </template>
 <script>
-import PipelineNode from "./PipelineNode";
-import PipelineLine from "./PipelineLine";
-import { Pipeline } from "./service";
+import PipelineNode from './PipelineNode'
+import PipelineLine from './PipelineLine'
+import { Pipeline } from './service'
+import { onMounted, ref, reactive, computed, watch } from 'vue'
 
 export default {
   components: {
@@ -31,7 +31,7 @@ export default {
       type: Number,
       default: 50
     },
-    //第一个点的y座标
+    // 第一个点的y座标
     y: {
       type: Number,
       default: 55
@@ -52,71 +52,65 @@ export default {
     },
     lineStyle: {
       type: String,
-      default: "default"
+      default: 'default'
     },
     showArrow: {
       type: Boolean,
       default: false
     }
   },
-  data() {
-    return {
-      nodeList: [],
-      width: 300,
-      height: 300,
-      lineList: [],
-      selectedList: [],
-      service: {}
-    };
-  },
-  computed: {
-    dataLength() {
-      return this.data.length;
+  emits: ['select', 'mouseenter', 'mouseleave'],
+  setup (props, { emit }) {
+    const nodeList = ref([])
+    const width = ref(300)
+    const height = ref(300)
+    const lineList = ref([])
+    const selectedList = ref([])
+    let service = reactive({})
+    const dataLength = computed(() => props.data.length)
+    const handleClick = (index, node) => {
+      selectedList.value.fill(false, 0, nodeList.value.length)
+      selectedList.value[index] = true
+      emit('select', node)
     }
-  },
-  watch: {
-    dataLength() {
-      this.render();
+    const handleMouseEnter = (index, node) => {
+      emit('mouseenter', node)
     }
-  },
-  methods: {
-    handleClick(index, node) {
-      this.selectedList.fill(false, 0, this.nodeList.length);
-      this.$set(this.selectedList, index, true);
-      this.selectedList[index] = true;
-      this.$emit("select", node);
-    },
-    handleMouseEnter(index, node) {
-      this.$emit("mouseenter", node);
-    },
-    handleMouseLeave(index, node) {
-      this.$emit("mouseleave", node);
-    },
-    render() {
-      this.service = new Pipeline(
-        this.data,
-        this.x,
-        this.y,
-        this.xstep,
-        this.ystep,
-        this.lineStyle
-      );
-      if (this.service.hasCircle()) {
-        throw new Error("Error data, The graph should not contain any circle!");
+    const handleMouseLeave = (index, node) => {
+      emit('mouseleave', node)
+    }
+    const render = () => {
+      console.log('data: ', props.data)
+      service = new Pipeline(
+        props.data,
+        props.x,
+        props.y,
+        props.xstep,
+        props.ystep,
+        props.lineStyle
+      )
+      if (service.hasCircle()) {
+        throw new Error('Error data, The graph should not contain any circle!')
       }
-      this.service.calculateAllPosition();
+      service.calculateAllPosition()
       // this.service.optimize();
-      this.nodeList = this.service.nodes;
-      this.lineList = this.service.getLines();
-      this.width = this.service.width;
-      this.height = this.service.height;
+      nodeList.value = service.nodes
+      lineList.value = service.getLines()
+      width.value = service.width
+      height.value = service.height
     }
-  },
-  mounted() {
-    this.render();
-    this.selectedList.fill(false, 0, this.nodeList.length);
+    watch(dataLength, () => {
+      render()
+    })
+    onMounted(() => {
+      render()
+      selectedList.value.fill(false, 0, nodeList.value.length)
+    })
+    return {
+      nodeList, width, height, lineList, selectedList, service, dataLength, handleClick, render, handleMouseLeave, handleMouseEnter
+    }
   }
-};
+}
 </script>
 
 <style >
